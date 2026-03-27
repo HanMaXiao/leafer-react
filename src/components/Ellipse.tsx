@@ -10,8 +10,14 @@ export interface EllipseProps {
   stroke?: string;
   strokeWidth?: number;
   cornerRadius?: number;
+  // 交互属性接口
   draggable?: boolean;
   editable?: boolean;
+  hittable?: boolean;
+  hitFill?: 'path' | 'pixel' | 'all' | 'none';
+  hitChildren?: boolean;
+  hitSelf?: boolean;
+  hitStroke?: 'path' | 'pixel' | 'all' | 'none';
   // 事件处理器接口
   onClick?: (e: any) => void;
   onDoubleClick?: (e: any) => void;
