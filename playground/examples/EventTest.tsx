@@ -4,8 +4,6 @@ import { Leafer, Group, Rect, Text, Ellipse, Star } from '../../src/index';
 
 export const EventTest: React.FC = () => {
   const [clickCount, setClickCount] = useState(0);
-  const [ellipseColor, setEllipseColor] = useState('#ff6b6b');
-  const [starColor, setStarColor] = useState('#ffd93d');
 
   return (
     <Leafer fill="#f5f5f5">
@@ -28,6 +26,7 @@ export const EventTest: React.FC = () => {
           width={150}
           height={100}
           fill="transparent"
+          hitFill="all"
           onClick={() => setClickCount(c => c + 1)}
         />
       </Group>
@@ -37,7 +36,7 @@ export const EventTest: React.FC = () => {
         <Ellipse
           width={120}
           height={100}
-          fill={ellipseColor}
+          fill="#ff6b6b"
           stroke="#ff5252"
           strokeWidth={2}
         />
@@ -46,8 +45,22 @@ export const EventTest: React.FC = () => {
           width={120}
           height={100}
           fill="transparent"
-          onMouseEnter={() => setEllipseColor('#ff8787')}
-          onMouseLeave={() => setEllipseColor('#ff6b6b')}
+          hitFill="all"
+          onMouseEnter={(e: any) => {
+            console.log('[EventTest] Ellipse onMouseEnter triggered!', e);
+            // 通过父级 Group 的 children 访问可见 Ellipse (index 0)
+            const group = e.target.parent;
+            if (group && group.children && group.children[0]) {
+              group.children[0].fill = '#ff8787';
+            }
+          }}
+          onMouseLeave={(e: any) => {
+            console.log('[EventTest] Ellipse onMouseLeave triggered!', e);
+            const group = e.target.parent;
+            if (group && group.children && group.children[0]) {
+              group.children[0].fill = '#ff6b6b';
+            }
+          }}
         />
       </Group>
 
@@ -56,7 +69,7 @@ export const EventTest: React.FC = () => {
         <Star
           width={100}
           height={100}
-          fill={starColor}
+          fill="#ffd93d"
           stroke="#ffcd02"
           strokeWidth={2}
           points={5}
@@ -66,7 +79,16 @@ export const EventTest: React.FC = () => {
           width={100}
           height={100}
           fill="transparent"
-          onClick={() => setStarColor(starColor === '#ffd93d' ? '#ff9f1a' : '#ffd93d')}
+          hitFill="all"
+          onClick={(e: any) => {
+            console.log('[EventTest] Star onClick triggered!', e);
+            const group = e.target.parent;
+            if (group && group.children && group.children[0]) {
+              const star = group.children[0];
+              const newColor = star.fill === '#ffd93d' ? '#ff9f1a' : '#ffd93d';
+              star.fill = newColor;
+            }
+          }}
         />
       </Group>
 
