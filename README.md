@@ -198,6 +198,23 @@ function MyComponent() {
 }
 ```
 
+## Playground
+
+Try the interactive playground to see leafer-react in action:
+
+```bash
+npm run dev:page
+```
+
+Open http://localhost:5173 to explore examples.
+
+### Available Examples
+
+- **Basic JSX**: Create graphics using JSX syntax
+- **React Component**: Render React UI on Canvas
+- **Interactive**: Events and interactions
+- **Animation**: State-driven animations
+
 ## 许可证
 
 MIT
