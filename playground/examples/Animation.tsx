@@ -1,6 +1,6 @@
 // playground/examples/Animation.tsx
 import React, { useState, useEffect } from 'react';
-import { Leafer, Rect, Ellipse, Text } from '@leafer-react';
+import { Leafer, Rect, Text } from '@leafer-react';
 
 export const Animation: React.FC<{ debug?: boolean }> = ({ debug }) => {
   const [rotation, setRotation] = useState(0);
@@ -51,23 +51,25 @@ export const Animation: React.FC<{ debug?: boolean }> = ({ debug }) => {
         rotation={rotation}
       />
 
-      {/* Counter-rotating ellipse */}
-      <Ellipse
+      {/* Counter-rotating rectangle */}
+      <Rect
         x={450}
         y={190}
         width={80}
         height={80}
         fill="#667eea"
+        cornerRadius={40}
         rotation={-rotation}
       />
 
       {/* Pulsing circle */}
-      <Ellipse
+      <Rect
         x={650}
         y={190}
         width={80}
         height={80}
         fill="#f5576c"
+        cornerRadius={40}
         scaleX={scale}
         scaleY={scale}
       />
@@ -120,7 +122,7 @@ export const Animation: React.FC<{ debug?: boolean }> = ({ debug }) => {
 };
 
 export const AnimationCode = `import React, { useState, useEffect } from 'react';
-import { Leafer, Rect, Ellipse, Text } from '@leafer-react';
+import { Leafer, Rect, Text } from '@leafer-react';
 
 export const Animation = () => {
   const [rotation, setRotation] = useState(0);
@@ -154,20 +156,22 @@ export const Animation = () => {
         fill="#32cd79"
         rotation={rotation}
       />
-      <Ellipse
+      <Rect
         x={450}
         y={190}
         width={80}
         height={80}
         fill="#667eea"
+        cornerRadius={40}
         rotation={-rotation}
       />
-      <Ellipse
+      <Rect
         x={650}
         y={190}
         width={80}
         height={80}
         fill="#f5576c"
+        cornerRadius={40}
         scaleX={scale}
         scaleY={scale}
       />

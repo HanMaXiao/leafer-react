@@ -1,6 +1,6 @@
 // playground/examples/BasicJSX.tsx
 import React, { useState } from 'react';
-import { Leafer, Group, Rect, Text, Ellipse } from '@leafer-react';
+import { Leafer, Group, Rect, Text } from '@leafer-react';
 
 export const BasicJSX: React.FC<{ debug?: boolean }> = ({ debug }) => {
   const [count, setCount] = useState(0);
@@ -51,8 +51,8 @@ export const BasicJSX: React.FC<{ debug?: boolean }> = ({ debug }) => {
         />
       </Group>
 
-      {/* Ellipse */}
-      <Ellipse
+      {/* Circle (using Rect with cornerRadius) */}
+      <Rect
         x={400}
         y={130}
         width={120}
@@ -60,6 +60,7 @@ export const BasicJSX: React.FC<{ debug?: boolean }> = ({ debug }) => {
         fill="#667eea"
         stroke="#5a67d8"
         strokeWidth={2}
+        cornerRadius={60}
         draggable={true}
       />
 
@@ -76,7 +77,7 @@ export const BasicJSX: React.FC<{ debug?: boolean }> = ({ debug }) => {
 };
 
 export const BasicJSXCode = `import React, { useState } from 'react';
-import { Leafer, Group, Rect, Text, Ellipse } from '@leafer-react';
+import { Leafer, Group, Rect, Text } from '@leafer-react';
 
 export const BasicJSX: React.FC<{ debug?: boolean }> = ({ debug }) => {
   const [count, setCount] = useState(0);
@@ -107,12 +108,13 @@ export const BasicJSX: React.FC<{ debug?: boolean }> = ({ debug }) => {
           fill="#ffffff"
         />
       </Group>
-      <Ellipse
+      <Rect
         x={400}
         y={130}
         width={120}
         height={120}
         fill="#667eea"
+        cornerRadius={60}
         draggable={true}
       />
     </Leafer>
