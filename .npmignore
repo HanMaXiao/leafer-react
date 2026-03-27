@@ -1,0 +1,24 @@
+# 源文件
+src/
+tests/
+examples/
+*.test.ts
+*.test.tsx
+
+# 开发文件
+tsconfig.json
+vitest.config.ts
+rollup.config.js
+babel.config.js
+.vscode/
+.idea/
+
+# 文档
+docs/
+CLAUDE.md
+.ai-docs/
+
+# 其他
+.gitignore
+node_modules/
+.DS_Store
