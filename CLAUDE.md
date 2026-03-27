@@ -16,6 +16,7 @@ npm install
 npm run dev    # 开发模式
 npm run build  # 构建
 npm test       # 测试
+npm run dev:page #测试页面
 ```
 
 ## Project Structure
