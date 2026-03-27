@@ -13,13 +13,13 @@ export default {
       format: 'cjs'
     }
   ],
-  external: ['react', '@leafer-ui/core', '@leafer-ui/interface', 'html2canvas'],
+  external: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime', '@leafer-ui/core', '@leafer-ui/interface', 'html2canvas', 'tslib'],
   plugins: [
     resolve(),
     typescript({
       declaration: true,
-      declarationDir: 'types',
-      rootDir: 'src'
+      rootDir: 'src',
+      outDir: 'dist'
     })
   ]
 };

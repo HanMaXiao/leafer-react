@@ -22,8 +22,8 @@ export const Leafer: React.FC<LeaferProps> = ({
   onAppReady,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const appRef = useRef<App>();
-  const contentRef = useRef<any>();
+  const appRef = useRef<App | null>(null);
+  const contentRef = useRef<any>(null);
 
   useEffect(() => {
     const viewElement =
@@ -57,7 +57,9 @@ export const Leafer: React.FC<LeaferProps> = ({
     }
 
     return () => {
-      app.destroy?.();
+      if (app.destroy) {
+        app.destroy();
+      }
     };
   }, [view, width, height, fill, editor]);
 
