@@ -1,38 +1,22 @@
 {
-    "compilerOptions": {
-        "target": "ES2015",
-        "module": "ES2015",
-        "lib": ["ESNext","DOM"],
-        "experimentalDecorators": true,
-        "allowJs": false,
-        "sourceMap": true,
-        "removeComments": true,
-        "strict": true,
-        "noImplicitAny": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "noImplicitReturns": true,
-        "strictNullChecks": false,
-        "allowSyntheticDefaultImports": true,
-        "moduleResolution": "node",
-        "resolveJsonModule": true,
-        "baseUrl": "./",
-        "outDir": "dist",
-    },
-    "exclude": [
-        "node_modules",
-        "**/node_modules/**",
-        "dist",
-        "dev",
-        "**/dist/**",
-        "**/lib/**",
-        "**/scripts/**",
-        "**/types/**"
-    ],
-    "ts-node": {
-        "files": true,
-        "compilerOptions": {
-            "esModuleInterop": true
-        }
-    }
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "jsx": "react",
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "Fragment",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "declaration": true,
+    "declarationDir": "./types",
+    "outDir": "./dist",
+    "strict": true,
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "types"]
 }
