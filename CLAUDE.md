@@ -12,11 +12,11 @@ This project enables writing Leafer applications using TSX/JSX syntax.
 ## Development
 
 ```bash
-npm install
-npm run dev    # 开发模式
-npm run build  # 构建
-npm test       # 测试
-npm run dev:page #测试页面
+pnpm install
+pnpm run dev    # 开发模式
+pnpm run build  # 构建
+pnpm test       # 测试
+pnpm run dev:page #测试页面
 ```
 
 ## Project Structure

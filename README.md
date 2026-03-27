@@ -203,10 +203,10 @@ function MyComponent() {
 Try the interactive playground to see leafer-react in action:
 
 ```bash
-npm run dev:page
+pnpm run dev:page
 ```
 
-Open http://localhost:5173 to explore examples.
+Open http://localhost:3000 to explore examples.
 
 ### Available Examples
 
