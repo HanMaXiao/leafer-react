@@ -1,6 +1,6 @@
 // playground/examples/Interactive.tsx
 import React, { useState } from 'react';
-import { Leafer, Rect, Text, Group } from '@leafer-react';
+import { Leafer, Rect, Text, Group } from '../../src/index';
 
 export const Interactive: React.FC<{ debug?: boolean }> = ({ debug }) => {
   const [clicks, setClicks] = useState({ rect1: 0, rect2: 0 });
@@ -31,10 +31,7 @@ export const Interactive: React.FC<{ debug?: boolean }> = ({ debug }) => {
           stroke="#28b367"
           strokeWidth={2}
           cornerRadius={12}
-          cursor="pointer"
           onClick={() => setClicks(c => ({ ...c, rect1: c.rect1 + 1 }))}
-          onMouseEnter={() => setHovered('rect1')}
-          onMouseLeave={() => setHovered(null)}
         />
         <Text
           x={50}
@@ -55,7 +52,6 @@ export const Interactive: React.FC<{ debug?: boolean }> = ({ debug }) => {
           stroke="#5a67d8"
           strokeWidth={2}
           cornerRadius={12}
-          cursor="pointer"
           onClick={() => setClicks(c => ({ ...c, rect2: c.rect2 + 1 }))}
           onMouseEnter={() => setHovered('rect2')}
           onMouseLeave={() => setHovered(null)}

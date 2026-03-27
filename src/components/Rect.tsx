@@ -13,6 +13,8 @@ export interface RectProps {
   editable?: boolean;
   onClick?: (e: any) => void;
   children?: any;
+  onMouseEnter?: (e: any) => void;
+  onMouseLeave?: (e: any) => void;
 }
 
 export function Rect(props: RectProps): any {

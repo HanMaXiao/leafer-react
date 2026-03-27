@@ -40,7 +40,7 @@ export const BasicJSX: React.FC<{ debug?: boolean }> = ({ debug }) => {
           fontSize={16}
           fill="#ffffff"
         />
-
+        
         {/* Click handler overlay */}
         <Rect
           width={200}
