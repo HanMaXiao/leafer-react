@@ -1,50 +1,203 @@
-# LeaferX
+# leafer-react
 
-LeaferX 是 Leafer 的第三方插件与上层应用中心，收录可用于生产环境的优秀插件和应用。
+用 TSX 编写 Leafer 应用的 React 插件。
 
-本仓库代码可作为 [插件开发模版](./template.md) 使用。
+## 特性
 
-## 命名规范
+- ✅ **声明式 JSX 语法** - 用熟悉的 TSX 编写 Leafer 应用
+- ✅ **React 组件渲染** - 在 Leafer 画布上渲染 React 组件
+- ✅ **Leafer 编辑器支持** - 完全兼容 Leafer 编辑器
+- ✅ **TypeScript 支持** - 完整的类型定义
+- ✅ **轻量级** - 零运行时开销的 JSX 转换
 
-第三方插件命名规范: leafer-x-插件名, 全局变量名为 LeaferX.插件名
+## 安装
 
-第三方应用命名规范: leafer-应用名 或 自定义名称
-
-```sh
-leafer-x-selector  # 读作 leafer 乘以 selector （插件）
-leafer-vue #  基于 leafer 的 vue 组件库 （上层应用）
+```bash
+npm install leafer-react @leafer-ui/core react
 ```
 
-## 收录要求
+## 快速开始
 
-插件和应用需要满足生产环境可用，并提供在线体验 demo、更新日志、完整的教程/文章（需发表到微信公众号 / 掘金 / 知乎平台），让用户可以很快上手使用。
+### 基础 JSX 语法
 
-## 申请收录示例
+```tsx
+import { Leafer, Rect, Text, Group } from 'leafer-react';
 
-通过提交 Issues 申请
+function App() {
+  return (
+    <Leafer view={window} editor={true}>
+      <Group x={100} y={100}>
+        <Rect width={200} height={100} fill="#32cd79" draggable />
+        <Text x={20} y={35} text="Hello Leafer!" fontSize={20} fill="#fff" />
+      </Group>
+    </Leafer>
+  );
+}
+```
 
-### 标题
+### 渲染 React 组件
 
-【插件】leafer-x-selector 选择工具
+```tsx
+import { Leafer, ReactComponent } from 'leafer-react';
 
-【应用】leafer-vue 基于 leafer 的 vue 组件
+const MyCard = ({ title, count }) => (
+  <div style={{ padding: '16px', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', borderRadius: '8px' }}>
+    <h2>{title}</h2>
+    <p>Count: {count}</p>
+  </div>
+);
 
-### 内容
+function App() {
+  const [count, setCount] = useState(0);
 
-**leafer-x-selector** 选择工具
+  return (
+    <Leafer view={window}>
+      <ReactComponent
+        x={100}
+        y={100}
+        width={200}
+        height={100}
+        component={MyCard}
+        props={{ title: 'Hello', count }}
+        draggable
+      />
+    </Leafer>
+  );
+}
+```
 
-插件简介(150 字以内) - [在线体验](./README.md)
+## API 文档
 
-[Github](./README.md) - [更新日志](./README.md) / [微信公众号](./README.md) / [掘金](./README.md) / [知乎](./README.md)
+### Leafer
 
-### Tip
+主容器组件。
 
-将插件教程或文章发布到微信公众号 / 掘金 / 知乎， 我们的官方账号会在这三个平台上同步转载你的文章，将获得长期的流量曝光。
+```tsx
+<Leafer
+  view={window}           // 容器元素
+  width={800}             // 宽度
+  height={600}            // 高度
+  fill="#f5f5f5"          // 背景色
+  editor={true}           // 启用编辑器
+>
+  {/* 内容 */}
+</Leafer>
+```
 
-## 可持续性
+### Rect
 
-我们希望你能够持续的优化更新插件，为用户提供良好的体验，如果你的插件解决了用户的问题，建议可以通过 [爱发电](https://afdian.net/) / Github 等平台开启赞助通道，收取一定的赞助来为用户提供高级功能和教程，我们后期也会考虑搭建一个开发者商店来简化这个流程。
+矩形元素。
 
-## 收录列表
+```tsx
+<Rect
+  x={100}                 // X 坐标
+  y={100}                 // Y 坐标
+  width={200}             // 宽度
+  height={100}            // 高度
+  fill="red"              // 填充色
+  stroke="blue"           // 边框色
+  strokeWidth={2}         // 边框宽度
+  cornerRadius={8}        // 圆角
+  draggable={true}        // 可拖拽
+  editable={true}         // 可编辑
+  onClick={handleClick}   // 点击事件
+/>
+```
 
-期待你的提交！
+### Text
+
+文本元素。
+
+```tsx
+<Text
+  x={100}
+  y={100}
+  text="Hello"            // 文本内容
+  fontSize={24}           // 字体大小
+  fill="black"            // 颜色
+  fontFamily="Arial"      // 字体
+  fontWeight="bold"       // 字重
+/>
+```
+
+### Group
+
+容器元素。
+
+```tsx
+<Group x={100} y={100} rotation={45}>
+  <Rect width={100} height={100} fill="red" />
+  <Text x={10} y={10} text="Group" />
+</Group>
+```
+
+### ReactComponent
+
+React 组件包装器。
+
+```tsx
+<ReactComponent
+  x={100}
+  y={100}
+  width={200}
+  height={100}
+  component={MyComponent}  // React 组件
+  props={{ title: 'Hello' }} // 传递给组件的 props
+  shouldUpdate={(old, new) => old.count !== new.count}
+  draggable={true}
+  editable={true}
+  onClick={handleClick}
+  onInteraction={(action, data) => console.log(action, data)}
+/>
+```
+
+## Hooks
+
+### useLeafer
+
+获取 Leafer App 实例。
+
+```tsx
+import { useLeafer } from 'leafer-react';
+
+function MyComponent() {
+  const app = useLeafer();
+  // 使用 app.tree, app.editor 等
+}
+```
+
+### useEditor
+
+获取编辑器控制。
+
+```tsx
+import { useEditor } from 'leafer-react';
+
+function MyComponent() {
+  const editor = useEditor();
+  editor.select(element);
+  editor.clear();
+}
+```
+
+### useReactComponent
+
+管理 React 组件实例。
+
+```tsx
+import { useReactComponent } from 'leafer-react';
+
+function MyComponent() {
+  const { componentRef, updateProps, getProps } = useReactComponent();
+
+  const handleClick = () => {
+    updateProps({ count: getProps().count + 1 });
+  };
+
+  return <ReactComponent ref={componentRef} ... />;
+}
+```
+
+## 许可证
+
+MIT
