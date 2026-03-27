@@ -1,10 +1,10 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import path from 'path';
+import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [react()],
-  root: '.',
+  root: './playground',
   publicDir: false,
   server: {
     port: 3000,
@@ -13,10 +13,12 @@ export default defineConfig({
   resolve: {
     alias: {
       '@leafer-ui/core': '@leafer-ui/core',
-      '@leafer-react': path.resolve(__dirname, './src'),
+      '@leafer-react': resolve(__dirname, './src'),
     },
   },
   optimizeDeps: {
     include: ['react', 'react-dom', '@leafer-ui/core'],
   },
 });
+
+declare const __dirname: string;
