@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>leafer-react 测试页面</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f5;
+    }
+    #app {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    #controls {
+      padding: 16px;
+      background: white;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    #controls h1 {
+      font-size: 18px;
+      margin-right: 16px;
+      color: #333;
+    }
+    .btn {
+      padding: 8px 16px;
+      background: #32cd79;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+    .btn:hover {
+      background: #28b367;
+    }
+    .btn.secondary {
+      background: #6c757d;
+    }
+    .btn.secondary:hover {
+      background: #5a6268;
+    }
+    #canvas {
+      flex: 1;
+      background: #f5f5f5;
+    }
+    .info {
+      padding: 8px 16px;
+      background: #e3f2fd;
+      border-radius: 4px;
+      font-size: 14px;
+      color: #1976d2;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div id="controls">
+      <h1>leafer-react 测试</h1>
+      <button class="btn" onclick="testBasicShapes()">基础图形</button>
+      <button class="btn" onclick="testReactComponents()">React 组件</button>
+      <button class="btn" onclick="testInteractive()">交互测试</button>
+      <button class="btn secondary" onclick="clearCanvas()">清空画布</button>
+      <span class="info" id="info">点击按钮测试不同功能</span>
+    </div>
+    <div id="canvas"></div>
+  </div>
+
+  <script type="module">
+    import React, { useState, useEffect } from 'react';
+    import { createRoot } from 'react-dom/client';
+    import { Leafer, Rect, Text, Group, ReactComponent } from '../src/index.js';
+
+    let app = null;
+    let currentRoot = null;
+
+    // 初始化 Leafer 应用
+    function initLeafer() {
+      const canvas = document.getElementById('canvas');
+      if (app) {
+        app.destroy();
+      }
+      app = new window.Leafer.Leafer({
+        view: canvas,
+        width: canvas.clientWidth,
+        height: canvas.clientHeight,
+        fill: '#f5f5f5'
+      });
+    }
+
+    // 测试 1: 基础图形
+    window.testBasicShapes = function() {
+      document.getElementById('info').textContent = '显示基础图形：矩形、圆形、文本';
+      initLeafer();
+
+      // 创建矩形
+      const rect = new window.Leafer.Rect({
+        x: 100,
+        y: 100,
+        width: 150,
+        height: 100,
+        fill: '#32cd79',
+        stroke: '#28b367',
+        strokeWidth: 2,
+        cornerRadius: 8,
+        draggable: true
+      });
+
+      // 创建圆形
+      const circle = new window.Leafer.Ellipse({
+        x: 300,
+        y: 100,
+        width: 100,
+        height: 100,
+        fill: '#667eea',
+        stroke: '#5a67d8',
+        strokeWidth: 2,
+        draggable: true
+      });
+
+      // 创建文本
+      const text = new window.Leafer.Text({
+        x: 100,
+        y: 250,
+        text: 'leafer-react 测试页面',
+        fontSize: 24,
+        fill: '#333',
+        fontWeight: 'bold'
+      });
+
+      const subtext = new window.Leafer.Text({
+        x: 100,
+        y: 290,
+        text: '拖动图形体验交互功能',
+        fontSize: 14,
+        fill: '#666'
+      });
+
+      app.tree.addMany([rect, circle, text, subtext]);
+    };
+
+    // 测试 2: React 组件渲染
+    window.testReactComponents = function() {
+      document.getElementById('info').textContent = '显示 React 组件：使用 html2canvas 渲染';
+
+      // 创建隐藏的 React 容器用于渲染
+      let reactContainer = document.getElementById('react-container');
+      if (!reactContainer) {
+        reactContainer = document.createElement('div');
+        reactContainer.id = 'react-container';
+        reactContainer.style.cssText = 'position:fixed;top:-9999px;left:-9999px;';
+        document.body.appendChild(reactContainer);
+      }
+
+      // 渲染 React 卡片组件
+      const CardComponent = ({ title, count, color }) => `
+        <div style="
+          width: 200px;
+          height: 120px;
+          padding: 16px;
+          background: ${color};
+          border-radius: 12px;
+          color: white;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          font-family: system-ui;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        ">
+          <div style="font-size: 18px; font-weight: bold;">${title}</div>
+          <div style="font-size: 32px; font-weight: bold;">${count}</div>
+        </div>
+      `;
+
+      initLeafer();
+
+      // 使用 html2canvas 渲染 React 组件到 Leafer
+      async function renderCards() {
+        const cards = [
+          { title: 'React 1', count: 42, color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', x: 100, y: 100 },
+          { title: 'React 2', count: 88, color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', x: 350, y: 100 },
+          { title: 'React 3', count: 15, color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', x: 600, y: 100 },
+        ];
+
+        for (const card of cards) {
+          reactContainer.innerHTML = CardComponent(card);
+
+          // 等待样式应用
+          await new Promise(resolve => setTimeout(resolve, 50));
+
+          const html2canvas = (await import('html2canvas')).default;
+          const canvas = await html2canvas(reactContainer, {
+            backgroundColor: 'transparent',
+            scale: 1,
+            logging: false
+          });
+
+          // 将 canvas 转换为图片并添加到 Leafer
+          const imageUrl = canvas.toDataURL();
+          const image = new window.Leafer.Image({
+            x: card.x,
+            y: card.y,
+            url: imageUrl,
+            width: canvas.width,
+            height: canvas.height,
+            draggable: true
+          });
+
+          app.tree.add(image);
+        }
+
+        // 添加说明文本
+        const text = new window.Leafer.Text({
+          x: 100,
+          y: 280,
+          text: '使用 html2canvas 将 React 组件渲染为图片',
+          fontSize: 16,
+          fill: '#666'
+        });
+
+        app.tree.add(text);
+      }
+
+      renderCards();
+    };
+
+    // 测试 3: 交互测试
+    window.testInteractive = function() {
+      document.getElementById('info').textContent = '交互测试：点击图形查看事件响应';
+      initLeafer();
+
+      let clickCount = 0;
+
+      // 创建可点击的矩形
+      const rect = new window.Leafer.Rect({
+        x: 100,
+        y: 100,
+        width: 200,
+        height: 100,
+        fill: '#32cd79',
+        cornerRadius: 12,
+        cursor: 'pointer'
+      });
+
+      rect.on('click', () => {
+        clickCount++;
+        rect.fill = `hsl(${120 + clickCount * 30}, 70%, 60%)`;
+        text.text = `点击次数: ${clickCount}`;
+      });
+
+      // 创建文本显示点击次数
+      const text = new window.Leafer.Text({
+        x: 100,
+        y: 230,
+        text: '点击次数: 0',
+        fontSize: 18,
+        fill: '#333'
+      });
+
+      // 创建提示
+      const hint = new window.Leafer.Text({
+        x: 100,
+        y: 280,
+        text: '点击绿色矩形查看效果',
+        fontSize: 14,
+        fill: '#999'
+      });
+
+      app.tree.addMany([rect, text, hint]);
+    };
+
+    // 清空画布
+    window.clearCanvas = function() {
+      document.getElementById('info').textContent = '画布已清空';
+      initLeafer();
+    };
+
+    // 页面加载时显示默认内容
+    window.addEventListener('load', () => {
+      testBasicShapes();
+    });
+
+    // 窗口大小改变时重新调整
+    window.addEventListener('resize', () => {
+      if (app) {
+        const canvas = document.getElementById('canvas');
+        app.width = canvas.clientWidth;
+        app.height = canvas.clientHeight;
+      }
+    });
+  </script>
+</body>
+</html>

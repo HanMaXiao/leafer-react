@@ -43,6 +43,7 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
+    "dev:page": "vite",
     "test": "vitest",
     "prepublishOnly": "npm run build && npm run test"
   }
