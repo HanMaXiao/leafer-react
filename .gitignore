@@ -3,6 +3,10 @@ dist
 types
 node_modules
 
+/docs
+/ai-docs
+
+
 package-lock.json
 pnpm-lock.yaml
 
