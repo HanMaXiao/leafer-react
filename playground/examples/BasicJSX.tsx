@@ -31,7 +31,7 @@ export const BasicJSX: React.FC<{ debug?: boolean }> = ({ debug }) => {
           fill="#ffffff"
           fontWeight="bold"
         />
-
+       
         {/* Counter */}
         <Text
           x={30}
