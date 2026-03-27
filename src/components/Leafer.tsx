@@ -146,7 +146,7 @@ export const Leafer: React.FC<LeaferProps> = ({
   }, [children]);
 
   return (
-    <LeaferContext.Provider value={appRef.current}>
+    <LeaferContext.Provider value={appRef.current as any}>
       <div
         ref={containerRef}
         style={{ width: '100%', height: '100%' }}
