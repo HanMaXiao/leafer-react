@@ -4,6 +4,7 @@ import { BasicJSX, BasicJSXCode } from './BasicJSX';
 import { ReactComponentExample, ReactComponentCode } from './ReactComponent';
 import { Interactive, InteractiveCode } from './Interactive';
 import { Animation, AnimationCode } from './Animation';
+import { EventTest, EventTestCode } from './EventTest';
 
 export const EXAMPLES: Example[] = [
   {
@@ -12,6 +13,13 @@ export const EXAMPLES: Example[] = [
     description: '使用 JSX 创建 Leafer 图形',
     component: BasicJSX,
     code: BasicJSXCode,
+  },
+  {
+    id: 'event-test',
+    name: '事件测试',
+    description: '测试 onClick, onMouseEnter 等事件',
+    component: EventTest,
+    code: EventTestCode,
   },
   {
     id: 'react-component',
@@ -38,6 +46,7 @@ export const EXAMPLES: Example[] = [
 
 export * from './types';
 export { BasicJSX, BasicJSXCode } from './BasicJSX';
+export { EventTest, EventTestCode } from './EventTest';
 export { ReactComponentExample, ReactComponentCode } from './ReactComponent';
 export { Interactive, InteractiveCode } from './Interactive';
 export { Animation, AnimationCode } from './Animation';

@@ -18,6 +18,23 @@ function isLeaferInstance(obj: any): boolean {
   return obj && typeof obj === 'object' && '__tag' in obj;
 }
 
+// 事件名称映射：React 风格 -> Leafer 风格
+const EVENT_NAME_MAP: Record<string, string> = {
+  'onClick': 'tap',
+  'onTap': 'tap',
+  'onDoubleClick': 'double_tap',
+  'onMouseDown': 'pointer.down',
+  'onMouseUp': 'pointer.up',
+  'onMouseMove': 'pointer.move',
+  'onMouseEnter': 'pointer.enter',
+  'onMouseLeave': 'pointer.leave',
+  'onPointerDown': 'pointer.down',
+  'onPointerUp': 'pointer.up',
+  'onPointerMove': 'pointer.move',
+  'onPointerEnter': 'pointer.enter',
+  'onPointerLeave': 'pointer.leave',
+};
+
 // 递归处理 React children，将它们转换为 Leafer 实例
 function processNode(node: ReactNode, debugPath = 'root'): any {
   if (node == null) return null;
@@ -30,16 +47,50 @@ function processNode(node: ReactNode, debugPath = 'root'): any {
     const props = { ...(node.props as Record<string, any> | undefined) };
     const componentName = (node.type as Function).name || String(node.type);
 
+    // 提取事件处理器
+    const eventHandlers: Record<string, Function> = {};
+    const cleanedProps: Record<string, any> = {};
+
+    for (const key in props) {
+      if (key.startsWith('on') && typeof props[key] === 'function') {
+        const leaferEventName = EVENT_NAME_MAP[key];
+        if (leaferEventName) {
+          eventHandlers[leaferEventName] = props[key];
+        } else {
+          // 如果没有映射，直接使用去掉 'on' 后的名称（小写）
+          const eventName = key.charAt(2).toLowerCase() + key.slice(3);
+          eventHandlers[eventName] = props[key];
+        }
+      } else {
+        cleanedProps[key] = props[key];
+      }
+    }
+
     // 递归处理 children
-    if (props.children) {
-      props.children = processNode(props.children, `${debugPath}.children`);
+    if (cleanedProps.children) {
+      cleanedProps.children = processNode(cleanedProps.children, `${debugPath}.children`);
     }
 
     // 如果是函数组件，执行它
     if (typeof node.type === 'function') {
       try {
-        const result = (node.type as Function)(props);
+        const result = (node.type as Function)(cleanedProps);
         const tag = result?.__tag || 'unknown';
+
+        // 如果是 Leafer 实例且有事件处理器，绑定事件
+        if (tag !== 'unknown' && isLeaferInstance(result) && Object.keys(eventHandlers).length > 0) {
+          console.log(`[processNode] ${debugPath} (${componentName}): binding events`, Object.keys(eventHandlers));
+
+          // 绑定事件到 Leafer 实例
+          for (const [eventName, handler] of Object.entries(eventHandlers)) {
+            try {
+              (result as any).on(eventName, handler);
+            } catch (e) {
+              console.warn(`[processNode] Failed to bind event '${eventName}':`, e);
+            }
+          }
+        }
+
         console.log(`[processNode] ${debugPath} (${componentName}): created ${tag} instance`);
         return result;
       } catch (e) {
