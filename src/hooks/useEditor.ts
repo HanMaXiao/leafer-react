@@ -13,20 +13,20 @@ export function useEditor(): EditorControls {
 
   return {
     select(element: any) {
-      if (app.editor) {
-        app.editor.select(element);
+      if ((app as any).editor) {
+        (app as any).editor.select(element);
       }
     },
     clear() {
-      if (app.editor) {
-        app.editor.clear();
+      if ((app as any).editor) {
+        (app as any).editor.clear();
       }
     },
     getSelected() {
-      return app.editor?.selected;
+      return (app as any).editor?.selected;
     },
     getEditor() {
-      return app.editor;
+      return (app as any).editor;
     },
   };
 }

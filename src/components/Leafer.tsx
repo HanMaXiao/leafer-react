@@ -41,7 +41,7 @@ export const Leafer: React.FC<LeaferProps> = ({
       width,
       height,
       fill,
-      editor: editor ? (typeof editor === 'object' ? editor : {}) : false,
+      editor: editor ? (typeof editor === 'object' ? editor as any : {}) : false,
     });
 
     appRef.current = app;
@@ -57,8 +57,8 @@ export const Leafer: React.FC<LeaferProps> = ({
     }
 
     return () => {
-      if (app.destroy) {
-        app.destroy();
+      if ((app as any).destroy) {
+        (app as any).destroy();
       }
     };
   }, [view, width, height, fill, editor]);
