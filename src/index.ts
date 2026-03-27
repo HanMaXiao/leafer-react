@@ -1,3 +1,4 @@
+import '@leafer-ui/web'; // 导入web渲染器，确保canvas功能可用
 import './core/renderer/leafer-elements';
 
 export * from './components';

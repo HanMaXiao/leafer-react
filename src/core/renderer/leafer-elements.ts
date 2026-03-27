@@ -1,4 +1,4 @@
-import { Rect as LeaferRect, Text as LeaferText, Group as LeaferGroup } from '@leafer-ui/core';
+import { Rect as LeaferRect, Text as LeaferText, Group as LeaferGroup } from '@leafer-ui/display';
 import { registerElement } from './element-registry';
 import { ReactComponent } from '../elements/ReactComponent';
 

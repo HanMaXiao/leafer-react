@@ -1,6 +1,6 @@
 import { Leafer, Rect } from 'leafer-ui'
 
-import { Selector, SelectEvent } from './src' // 引入插件代码
+// import { Selector, SelectEvent } from './src' // 引入插件代码
 
 
 const leafer = new Leafer({ view: window })
@@ -16,4 +16,4 @@ const rect = new Rect({
 
 leafer.add(rect)
 
-console.log(Selector, SelectEvent)
+// console.log(Selector, SelectEvent)

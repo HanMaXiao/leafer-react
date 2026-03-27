@@ -17,8 +17,23 @@
     "react": "^19.0.0"
   },
   "dependencies": {
+    "@leafer-in/animate": "^2.0.5",
+    "@leafer-in/box": "^2.0.5",
+    "@leafer-in/editor": "^2.0.5",
+    "@leafer-in/export": "^2.0.5",
+    "@leafer-in/flow": "^2.0.5",
+    "@leafer-in/resize": "^2.0.5",
+    "@leafer-in/state": "^2.0.5",
+    "@leafer-in/view": "^2.0.5",
+    "@leafer-in/viewport": "^2.0.5",
     "@leafer-ui/core": "^1.2.2 || ^2.0.0",
-    "html2canvas": "^1.4.1"
+    "@leafer-ui/draw": "^2.0.5",
+    "@leafer-ui/gradient": "^2.0.5",
+    "@leafer-ui/image": "^2.0.5",
+    "@leafer-ui/mask": "^2.0.5",
+    "@leafer-ui/web": "^2.0.5",
+    "html2canvas": "^1.4.1",
+    "leafer-ui": "2.0.5"
   },
   "devDependencies": {
     "@babel/cli": "^7.24.0",
@@ -26,7 +41,7 @@
     "@babel/plugin-syntax-jsx": "^7.24.0",
     "@babel/preset-react": "^7.24.0",
     "@babel/preset-typescript": "^7.24.0",
-    "@leafer-ui/interface": "^1.2.2",
+    "@leafer-ui/interface": "^2.0.5",
     "@rollup/plugin-node-resolve": "^15.0.0",
     "@rollup/plugin-typescript": "^12.0.0",
     "@types/html2canvas": "^1.0.0",
