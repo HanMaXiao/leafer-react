@@ -1,6 +1,6 @@
 // playground/examples/BasicJSX.tsx
 import React, { useState } from 'react';
-import { Leafer, Group, Rect, Text } from '@leafer-react';
+import { Leafer, Group, Rect, Text } from '../../src/index';
 
 export const BasicJSX: React.FC<{ debug?: boolean }> = ({ debug }) => {
   const [count, setCount] = useState(0);
@@ -11,7 +11,7 @@ export const BasicJSX: React.FC<{ debug?: boolean }> = ({ debug }) => {
 
   return (
     <Leafer fill="#f5f5f5">
-      <Group x={100} y={80} draggable={true}>
+      <Group x={100} y={80} >
         {/* Rectangle */}
         <Rect
           width={200}
@@ -46,7 +46,6 @@ export const BasicJSX: React.FC<{ debug?: boolean }> = ({ debug }) => {
           width={200}
           height={100}
           fill="transparent"
-          cursor="pointer"
           onClick={() => setCount(c => c + 1)}
         />
       </Group>
@@ -77,7 +76,7 @@ export const BasicJSX: React.FC<{ debug?: boolean }> = ({ debug }) => {
 };
 
 export const BasicJSXCode = `import React, { useState } from 'react';
-import { Leafer, Group, Rect, Text } from '@leafer-react';
+import { Leafer, Group, Rect, Text } from '../../src/index';
 
 export const BasicJSX: React.FC<{ debug?: boolean }> = ({ debug }) => {
   const [count, setCount] = useState(0);

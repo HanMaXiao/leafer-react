@@ -1,6 +1,6 @@
 // playground/examples/ReactComponent.tsx
 import React, { useState } from 'react';
-import { Leafer, ReactComponent, Text } from '@leafer-react';
+import { Leafer, ReactComponent, Text } from '../../src/index';
 
 // Card component to be rendered on canvas
 const Card: React.FC<{

@@ -37,7 +37,7 @@ export function ReactComponentsExample() {
   const [counts, setCounts] = useState({ card1: 0, card2: 0 });
 
   return (
-    <Leafer view={window} editor={true} fill="#f5f5f5">
+    <Leafer view={'window'} editor={true} fill="#f5f5f5">
       <ReactComponent
         x={100}
         y={100}
