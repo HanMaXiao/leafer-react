@@ -5,7 +5,6 @@ import { BasicElements, BasicElementsCode } from './BasicElements';
 import { CompoundElements, CompoundElementsCode } from './CompoundElements';
 import { ReactBasicComponent, ReactBasicComponentCode } from './ReactBasicComponent';
 import { ReactCompoundComponent, ReactCompoundComponentCode } from './ReactCompoundComponent';
-import { CustomElement, CustomElementCode } from './CustomElement';
 import { Interactive, InteractiveCode } from './Interactive';
 import { Animation, AnimationCode } from './Animation';
 import { EventTest, EventTestCode } from './EventTest';
@@ -46,13 +45,13 @@ export const EXAMPLES: Example[] = [
     component: ReactCompoundComponent,
     code: ReactCompoundComponentCode,
   },
-  {
-    id: 'custom-element',
-    name: '6. 自定义元素',
-    description: '自定义 Leafer 元素注册成 React 组件',
-    component: CustomElement,
-    code: CustomElementCode,
-  },
+  // {
+  //   id: 'custom-element',
+  //   name: '6. 自定义元素',
+  //   description: '自定义 Leafer 元素注册成 React 组件',
+  //   component: CustomElement,
+  //   code: CustomElementCode,
+  // },
   {
     id: 'interactive',
     name: '交互事件',
@@ -82,7 +81,7 @@ export { BasicElements, BasicElementsCode } from './BasicElements';
 export { CompoundElements, CompoundElementsCode } from './CompoundElements';
 export { ReactBasicComponent, ReactBasicComponentCode } from './ReactBasicComponent';
 export { ReactCompoundComponent, ReactCompoundComponentCode } from './ReactCompoundComponent';
-export { CustomElement, CustomElementCode } from './CustomElement';
+// export { CustomElement, CustomElementCode } from './CustomElement';
 export { Interactive, InteractiveCode } from './Interactive';
 export { Animation, AnimationCode } from './Animation';
 export { EventTest, EventTestCode } from './EventTest';

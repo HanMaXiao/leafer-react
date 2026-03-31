@@ -85,15 +85,15 @@ function Card({ x, y, title, color }) {
 | `<section>` | Group | Frame |
 
 ```tsx
-// 带 fill 的 div 映射为 Frame（带背景的容器）
-<div fill="#667eea" cornerRadius={12}>
+// 带 背景颜色 的 div 映射为 Frame（带背景的容器）
+<div style=backgroundcolor="#667eea" cornerRadius={12}>
   <Text x={15} y={15} text="I'm in a Frame" fontSize={16} fill="#fff" />
 </div>
 ```
 
 ### 4. React 组件渲染
 
-函数组件由 Reconciler 自动展开，支持无限嵌套组合。
+函数组件自动展开，支持无限嵌套组合。
 
 ```tsx
 function Card({ title, count, color }) {
@@ -149,7 +149,7 @@ class Diamond extends UI {
   }
 }
 
-// 注册后即可在 JSX 中使用
+// 注册后暂时没有Props无法使用（暂定）
 registerComponent('Diamond', Diamond);
 
 <Leafer>
@@ -241,6 +241,22 @@ pnpm run build      # 构建
 pnpm test           # 测试
 pnpm run dev:page   # 启动 Playground
 ```
+
+## BUG&&优化
+修复自定义元素没有Props无法作为JSX使用的问题
+
+优化Reconciler中解析Backgroundcolor
+
+## 路线图
+### Leafer-React
+- [ ] 支持更多Leafer基础元素
+- [ ] 测试各种组件渲染在leafer上
+### PlayGround演练场
+- [ ] 添加 Monaco 编辑器支持实时代码编辑
+- [ ] 添加主题切换功能
+- [ ] 添加性能监控面板
+- [ ] 导出示例代码功能
+- [ ] 部署到 GitHub Pages
 
 ## 许可证
 

@@ -15,9 +15,10 @@ export default defineConfig({
       '@leafer-ui/core': '@leafer-ui/core',
       '@leafer-react': resolve(__dirname, './src'),
     },
+    dedupe: ['react', 'react-dom', 'react-reconciler'],
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', '@leafer-ui/core'],
+    include: ['react', 'react-dom', 'react-reconciler', '@leafer-ui/core'],
   },
 });
 
