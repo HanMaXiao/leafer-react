@@ -1,4 +1,4 @@
-import { h } from '../core/renderer/jsx-runtime';
+import { defineLeaferElement } from './factory';
 import { BaseShapeProps, RoundedCornerProps, FullInteractiveProps, EventProps } from './types';
 
 export interface EllipseProps extends
@@ -9,6 +9,4 @@ export interface EllipseProps extends
   children?: never;
 }
 
-export function Ellipse(props: EllipseProps): any {
-  return h('Ellipse', props);
-}
+export const Ellipse = defineLeaferElement<EllipseProps>('Ellipse');

@@ -1,4 +1,4 @@
-import { h } from '../core/renderer/jsx-runtime';
+import { defineLeaferElement } from './factory';
 import { BaseShapeProps, FullInteractiveProps, EventProps } from './types';
 
 export interface StarProps extends
@@ -10,6 +10,4 @@ export interface StarProps extends
   children?: never;
 }
 
-export function Star(props: StarProps): any {
-  return h('Star', props);
-}
+export const Star = defineLeaferElement<StarProps>('Star');

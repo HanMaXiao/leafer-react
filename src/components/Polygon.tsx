@@ -1,4 +1,4 @@
-import { h } from '../core/renderer/jsx-runtime';
+import { defineLeaferElement } from './factory';
 import { BaseShapeProps, InteractiveProps, ClickEventProps } from './types';
 
 export interface PolygonProps extends
@@ -9,6 +9,4 @@ export interface PolygonProps extends
   children?: never;
 }
 
-export function Polygon(props: PolygonProps): any {
-  return h('Polygon', props);
-}
+export const Polygon = defineLeaferElement<PolygonProps>('Polygon');

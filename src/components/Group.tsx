@@ -1,4 +1,4 @@
-import { h } from '../core/renderer/jsx-runtime';
+import { defineLeaferElement } from './factory';
 import { TransformProps } from './types';
 
 export interface GroupProps extends TransformProps {
@@ -7,6 +7,4 @@ export interface GroupProps extends TransformProps {
   children?: any;
 }
 
-export function Group(props: GroupProps): any {
-  return h('Group', props);
-}
+export const Group = defineLeaferElement<GroupProps>('Group');

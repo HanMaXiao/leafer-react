@@ -1,13 +1,14 @@
 import { defineLeaferElement } from './factory';
 import { BaseShapeProps, RoundedCornerProps, OverflowProps, InteractiveProps, ClickEventProps } from './types';
 
-export interface BoxProps extends
+export interface FrameProps extends
   BaseShapeProps,
   RoundedCornerProps,
   OverflowProps,
   InteractiveProps,
   ClickEventProps {
+  resizeChildren?: boolean;
   children?: any;
 }
 
-export const Box = defineLeaferElement<BoxProps>('Box');
+export const Frame = defineLeaferElement<FrameProps>('Frame');

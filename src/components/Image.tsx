@@ -1,4 +1,4 @@
-import { h } from '../core/renderer/jsx-runtime';
+import { defineLeaferElement } from './factory';
 import { BaseShapeProps, RoundedCornerProps, InteractiveProps, ClickEventProps } from './types';
 
 export interface ImageProps extends
@@ -11,6 +11,4 @@ export interface ImageProps extends
   children?: never;
 }
 
-export function Image(props: ImageProps): any {
-  return h('Image', props);
-}
+export const Image = defineLeaferElement<ImageProps>('Image');
