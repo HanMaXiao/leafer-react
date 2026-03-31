@@ -1,16 +1,11 @@
 import { h } from '../core/renderer/jsx-runtime';
+import { BaseShapeProps, InteractiveProps, ClickEventProps } from './types';
 
-export interface LineProps {
-  x?: number;
-  y?: number;
-  width?: number;
-  height?: number;
-  stroke?: string;
-  strokeWidth?: number;
+export interface LineProps extends
+  Omit<BaseShapeProps, 'fill'>,
+  InteractiveProps,
+  ClickEventProps {
   points?: number[][];
-  draggable?: boolean;
-  editable?: boolean;
-  onClick?: (e: any) => void;
   children?: never;
 }
 

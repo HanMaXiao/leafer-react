@@ -1,18 +1,12 @@
 import { h } from '../core/renderer/jsx-runtime';
+import { BaseShapeProps, InteractiveProps, ClickEventProps } from './types';
 
-export interface PathProps {
-  x?: number;
-  y?: number;
-  width?: number;
-  height?: number;
+export interface PathProps extends
+  BaseShapeProps,
+  InteractiveProps,
+  ClickEventProps {
   path?: string;
   data?: string;
-  fill?: string;
-  stroke?: string;
-  strokeWidth?: number;
-  draggable?: boolean;
-  editable?: boolean;
-  onClick?: (e: any) => void;
   children?: never;
 }
 

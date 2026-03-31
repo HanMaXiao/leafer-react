@@ -1,17 +1,11 @@
 import { h } from '../core/renderer/jsx-runtime';
+import { BaseShapeProps, InteractiveProps, ClickEventProps } from './types';
 
-export interface PolygonProps {
-  x?: number;
-  y?: number;
+export interface PolygonProps extends
+  BaseShapeProps,
+  InteractiveProps,
+  ClickEventProps {
   points?: number[][];
-  width?: number;
-  height?: number;
-  fill?: string;
-  stroke?: string;
-  strokeWidth?: number;
-  draggable?: boolean;
-  editable?: boolean;
-  onClick?: (e: any) => void;
   children?: never;
 }
 

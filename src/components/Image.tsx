@@ -1,19 +1,13 @@
 import { h } from '../core/renderer/jsx-runtime';
+import { BaseShapeProps, RoundedCornerProps, InteractiveProps, ClickEventProps } from './types';
 
-export interface ImageProps {
-  x?: number;
-  y?: number;
-  width?: number;
-  height?: number;
-  src?: string;
+export interface ImageProps extends
+  BaseShapeProps,
+  RoundedCornerProps,
+  InteractiveProps,
+  ClickEventProps {
   url?: string;
-  fill?: string;
-  stroke?: string;
-  strokeWidth?: number;
-  cornerRadius?: number;
-  draggable?: boolean;
-  editable?: boolean;
-  onClick?: (e: any) => void;
+  src?: string;
   children?: never;
 }
 

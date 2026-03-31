@@ -1,12 +1,9 @@
 import { h } from '../core/renderer/jsx-runtime';
+import { BaseShapeProps } from './types';
 
-export interface TextProps {
-  x?: number;
-  y?: number;
+export interface TextProps extends BaseShapeProps {
   text?: string;
   fontSize?: number;
-  fill?: string;
-  stroke?: string;
   fontFamily?: string;
   fontWeight?: string;
   textAlign?: 'left' | 'center' | 'right';
