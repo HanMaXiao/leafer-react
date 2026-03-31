@@ -1,14 +1,9 @@
 import { h } from '../core/renderer/jsx-runtime';
+import { TransformProps } from './types';
 
-export interface GroupProps {
+export interface GroupProps extends TransformProps {
   x?: number;
   y?: number;
-  rotation?: number;
-  scale?: number;
-  scaleX?: number;
-  scaleY?: number;
-  opacity?: number;
-  visible?: boolean;
   children?: any;
 }
 

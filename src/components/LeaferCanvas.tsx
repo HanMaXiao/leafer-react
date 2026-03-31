@@ -1,16 +1,11 @@
 import { h } from '../core/renderer/jsx-runtime';
+import { BaseShapeProps, RoundedCornerProps, InteractiveProps, ClickEventProps } from './types';
 
-export interface CanvasProps {
-  x?: number;
-  y?: number;
-  width?: number;
-  height?: number;
-  fill?: string;
-  stroke?: string;
-  cornerRadius?: number;
-  draggable?: boolean;
-  editable?: boolean;
-  onClick?: (e: any) => void;
+export interface CanvasProps extends
+  BaseShapeProps,
+  RoundedCornerProps,
+  InteractiveProps,
+  ClickEventProps {
   children?: never;
 }
 

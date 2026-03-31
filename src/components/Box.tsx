@@ -1,18 +1,12 @@
 import { h } from '../core/renderer/jsx-runtime';
+import { BaseShapeProps, RoundedCornerProps, OverflowProps, InteractiveProps, ClickEventProps } from './types';
 
-export interface BoxProps {
-  x?: number;
-  y?: number;
-  width?: number;
-  height?: number;
-  fill?: string;
-  stroke?: string;
-  strokeWidth?: number;
-  cornerRadius?: number;
-  overflow?: boolean | 'hidden' | 'visible';
-  draggable?: boolean;
-  editable?: boolean;
-  onClick?: (e: any) => void;
+export interface BoxProps extends
+  BaseShapeProps,
+  RoundedCornerProps,
+  OverflowProps,
+  InteractiveProps,
+  ClickEventProps {
   children?: any;
 }
 
