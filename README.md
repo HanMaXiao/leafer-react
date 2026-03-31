@@ -4,11 +4,12 @@
 
 ## 特性
 
-- ✅ **声明式 JSX 语法** - 用熟悉的 TSX 编写 Leafer 应用
-- ✅ **React 组件渲染** - 在 Leafer 画布上渲染 React 组件
-- ✅ **Leafer 编辑器支持** - 完全兼容 Leafer 编辑器
-- ✅ **TypeScript 支持** - 完整的类型定义
-- ✅ **轻量级** - 零运行时开销的 JSX 转换
+- **声明式 JSX 语法** - 用熟悉的 TSX 编写 Leafer 应用
+- **React Reconciler 驱动** - 基于 React Reconciler 实现增量更新
+- **完整的 React 组件支持** - 基础组件、复合组件、自定义组件
+- **HTML 容器兼容** - `<div>` 自动映射为 Leafer Group/Frame
+- **插件化扩展** - 通过 `registerComponent` 注册自定义元素
+- **TypeScript 支持** - 完整的类型定义
 
 ## 安装
 
@@ -18,16 +19,14 @@ npm install leafer-react @leafer-ui/core react
 
 ## 快速开始
 
-### 基础 JSX 语法
-
 ```tsx
 import { Leafer, Rect, Text, Group } from 'leafer-react';
 
 function App() {
   return (
-    <Leafer view={window} editor={true}>
+    <Leafer fill="#f5f5f5">
       <Group x={100} y={100}>
-        <Rect width={200} height={100} fill="#32cd79" draggable />
+        <Rect width={200} height={100} fill="#32cd79" cornerRadius={8} draggable />
         <Text x={20} y={35} text="Hello Leafer!" fontSize={20} fill="#fff" />
       </Group>
     </Leafer>
@@ -35,229 +34,226 @@ function App() {
 }
 ```
 
-### 渲染 React 组件
+## 核心能力
+
+### 1. 基础图元映射
+
+将 Leafer 原生图形元素映射为 JSX 标签，直接在 React 中使用。
 
 ```tsx
-import { Leafer, ReactComponent } from 'leafer-react';
+import { Leafer, Rect, Ellipse, Star, Line, Text } from 'leafer-react';
 
-const MyCard = ({ title, count }) => (
-  <div style={{ padding: '16px', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', borderRadius: '8px' }}>
-    <h2>{title}</h2>
-    <p>Count: {count}</p>
-  </div>
-);
+<Leafer fill="#f5f5f5">
+  <Rect width={100} height={80} fill="#32cd79" cornerRadius={8} />
+  <Ellipse x={150} width={100} height={80} fill="#ff6b6b" />
+  <Star x={280} width={100} height={100} fill="#ffd93d" points={5} />
+  <Line points={[0, 40, 80, 10, 160, 40]} stroke="#845ef7" strokeWidth={3} />
+</Leafer>
+```
 
-function App() {
-  const [count, setCount] = useState(0);
+支持的元素：`Rect`、`Ellipse`、`Star`、`Polygon`、`Line`、`Path`、`Pen`、`Text`、`Image`、`Group`、`Box`、`Frame`
 
+### 2. 复合元素组合
+
+用 React 函数组件组合基础元素，Reconciler 自动处理层级关系。
+
+```tsx
+function Card({ x, y, title, color }) {
   return (
-    <Leafer view={window}>
-      <ReactComponent
-        x={100}
-        y={100}
-        width={200}
-        height={100}
-        component={MyCard}
-        props={{ title: 'Hello', count }}
-        draggable
-      />
-    </Leafer>
+    <Group x={x} y={y}>
+      <Rect width={180} height={100} fill={color} cornerRadius={12} />
+      <Text x={15} y={15} text={title} fontSize={16} fill="#fff" fontWeight="bold" />
+      <Text x={15} y={40} text="复合元素组合" fontSize={12} fill="rgba(255,255,255,0.8)" />
+    </Group>
   );
 }
+
+<Leafer fill="#f5f5f5">
+  <Card x={50} y={70} title="Card A" color="#667eea" />
+  <Card x={260} y={70} title="Card B" color="#f5576c" />
+</Leafer>
+```
+
+### 3. HTML 容器映射
+
+`<div>` 等 HTML 容器标签自动映射为 Leafer 元素：
+
+| HTML 标签 | 无 fill/stroke | 有 fill/stroke |
+|-----------|---------------|---------------|
+| `<div>` | Group | Frame |
+| `<span>` | Group | Frame |
+| `<section>` | Group | Frame |
+
+```tsx
+// 带 背景颜色 的 div 映射为 Frame（带背景的容器）
+<div style=backgroundcolor="#667eea" cornerRadius={12}>
+  <Text x={15} y={15} text="I'm in a Frame" fontSize={16} fill="#fff" />
+</div>
+```
+
+### 4. React 组件渲染
+
+函数组件自动展开，支持无限嵌套组合。
+
+```tsx
+function Card({ title, count, color }) {
+  return (
+    <div fill={color} cornerRadius={12}>
+      <Text x={15} y={12} text={title} fontSize={15} fill="#fff" />
+      <Text x={15} y={35} text={`Count: ${count}`} fontSize={13} fill="rgba(255,255,255,0.85)" />
+    </div>
+  );
+}
+
+function CardList({ items }) {
+  return (
+    <div>
+      {items.map((item, i) => (
+        <Group key={i} x={i * 190}>
+          <Card {...item} />
+        </Group>
+      ))}
+    </div>
+  );
+}
+```
+
+### 5. 自定义元素注册
+
+通过 `registerComponent` 将自定义 Leafer 图形类注册为 JSX 元素。
+
+```tsx
+import { registerComponent } from 'leafer-react';
+import { UI, registerUI } from '@leafer-ui/core';
+
+@registerUI()
+class Diamond extends UI {
+  public get __tag() { return 'Diamond'; }
+
+  __draw(canvas) {
+    const { context } = canvas;
+    const w = this.width || 60;
+    const h = this.height || 60;
+
+    context.beginPath();
+    context.moveTo(w / 2, 0);
+    context.lineTo(w, h / 2);
+    context.lineTo(w / 2, h);
+    context.lineTo(0, h / 2);
+    context.closePath();
+
+    if (this.fill) {
+      context.fillStyle = this.fill;
+      context.fill();
+    }
+  }
+}
+
+// 注册后暂时没有Props无法使用（暂定）
+registerComponent('Diamond', Diamond);
+
+<Leafer>
+  <Diamond width={80} height={80} fill="#667eea" />
+</Leafer>
 ```
 
 ## API 文档
 
 ### Leafer
 
-主容器组件。
+主容器组件，创建 Leafer 画布。
 
 ```tsx
 <Leafer
-  view={window}           // 容器元素
+  view={window}           // 容器元素或选择器
   width={800}             // 宽度
   height={600}            // 高度
   fill="#f5f5f5"          // 背景色
   editor={true}           // 启用编辑器
+  onAppReady={(app) => {}} // 就绪回调
 >
-  {/* 内容 */}
+  {/* 子元素 */}
 </Leafer>
 ```
 
-### Rect
+### 元素组件
 
-矩形元素。
+所有 Leafer 原生属性都支持作为 JSX props。
 
 ```tsx
 <Rect
-  x={100}                 // X 坐标
-  y={100}                 // Y 坐标
-  width={200}             // 宽度
-  height={100}            // 高度
-  fill="red"              // 填充色
-  stroke="blue"           // 边框色
-  strokeWidth={2}         // 边框宽度
-  cornerRadius={8}        // 圆角
-  draggable={true}        // 可拖拽
-  editable={true}         // 可编辑
-  onClick={handleClick}   // 点击事件
-/>
-```
-
-### Text
-
-文本元素。
-
-```tsx
-<Text
-  x={100}
-  y={100}
-  text="Hello"            // 文本内容
-  fontSize={24}           // 字体大小
-  fill="black"            // 颜色
-  fontFamily="Arial"      // 字体
-  fontWeight="bold"       // 字重
-/>
-```
-
-### Group
-
-容器元素。
-
-```tsx
-<Group x={100} y={100} rotation={45}>
-  <Rect width={100} height={100} fill="red" />
-  <Text x={10} y={10} text="Group" />
-</Group>
-```
-
-### ReactComponent
-
-React 组件包装器。
-
-```tsx
-<ReactComponent
-  x={100}
-  y={100}
-  width={200}
-  height={100}
-  component={MyComponent}  // React 组件
-  props={{ title: 'Hello' }} // 传递给组件的 props
-  shouldUpdate={(old, new) => old.count !== new.count}
+  x={100} y={100}
+  width={200} height={100}
+  fill="red" stroke="blue" strokeWidth={2}
+  cornerRadius={8}
   draggable={true}
   editable={true}
   onClick={handleClick}
-  onInteraction={(action, data) => console.log(action, data)}
+  onMouseEnter={handleEnter}
+  onMouseLeave={handleLeave}
 />
 ```
 
-## Hooks
+### registerComponent
 
-### useLeafer
-
-获取 Leafer App 实例。
+注册自定义 Leafer 元素。
 
 ```tsx
-import { useLeafer } from 'leafer-react';
+import { registerComponent } from 'leafer-react';
 
-function MyComponent() {
-  const app = useLeafer();
-  // 使用 app.tree, app.editor 等
-}
+registerComponent(tag: string, ElementClass: new (props: any) => any);
 ```
 
-### useEditor
-
-获取编辑器控制。
+### Hooks
 
 ```tsx
-import { useEditor } from 'leafer-react';
+import { useLeafer, useEditor } from 'leafer-react';
 
-function MyComponent() {
-  const editor = useEditor();
-  editor.select(element);
-  editor.clear();
-}
+// 获取 Leafer App 实例
+const app = useLeafer();
+
+// 获取编辑器控制
+const editor = useEditor();
+editor.select(element);
+editor.clear();
 ```
 
-### useReactComponent
+## 事件映射
 
-管理 React 组件实例。
+React 事件自动映射为 Leafer 事件：
 
-```tsx
-import { useReactComponent } from 'leafer-react';
+| React | Leafer |
+|-------|--------|
+| `onClick` | `tap` |
+| `onDoubleClick` | `double_tap` |
+| `onMouseDown` | `pointer.down` |
+| `onMouseUp` | `pointer.up` |
+| `onMouseMove` | `pointer.move` |
+| `onMouseEnter` | `pointer.enter` |
+| `onMouseLeave` | `pointer.leave` |
 
-function MyComponent() {
-  const { componentRef, updateProps, getProps } = useReactComponent();
-
-  const handleClick = () => {
-    updateProps({ count: getProps().count + 1 });
-  };
-
-  return <ReactComponent ref={componentRef} ... />;
-}
-```
-
-## Playground
-
-实时预览Leafer React插件功能演练场
+## 开发
 
 ```bash
-pnpm run dev:page
+pnpm install
+pnpm run dev        # 监听模式构建
+pnpm run build      # 构建
+pnpm test           # 测试
+pnpm run dev:page   # 启动 Playground
 ```
 
-打开 <http://localhost:3000> 测试示例(有人聚合下演练场吗)
+## BUG&&优化
+修复自定义元素没有Props无法作为JSX使用的问题
 
-### Available Examples
+优化Reconciler中解析Backgroundcolor
 
-- **Basic JSX**: 使用React语法创建图形
-- **React Component**: 在Leafer画布上渲染React组件
-- **Interactive**: 事件和交互属性
-- **Animation**: 状态驱动动画
+修复leafer元素点击后React组件异常BUG
 
-## Goal
-
-1：使用插件提供的leafer基础元素组件构建leafer应用和基础绘图；<Rect><Rect/>
-2：渲染由leafer基础元素组件组合的复合组件； <Rect> <Rect/> <Text/> <Rect/>
-3：渲染基础React组件如 <Card>
-
-  <div>...<div/>
-<Card/>;
-4:渲染复合组件，如
-<CardList>
-  <Card/>
-<CardList>;
-5:自定义Leafer元素注册成React组件；
-// 自定义雷达图类
-class RadarChart extends UI {
-  protected onDraw(canvas: any) {
-    // Canvas 绑定逻辑
-  }
-}
-
-// 注册并获取 React 组件
-const Radar = registerComponent('Radar', RadarChart);
-
-// 在 TSX 中使用
-function App() {
-return ( <Leafer>
-\<Radar x={100} y={100} data={\[1, 2, 3, 4, 5]} /> </Leafer>
-);
-}
-
-## RoadMap
-
-### leafer-react
-
-1:支持更多leafer元素
-
-2:实现完整的React Reconciler(解析复杂React组件)
-
-
-3:开发leafer-react调试工具
-
-### leafer-react-playground
-
+## 路线图
+### Leafer-React
+- [ ] 支持更多Leafer基础元素
+- [ ] 测试各种组件渲染在leafer上
+### PlayGround演练场
 - [ ] 添加 Monaco 编辑器支持实时代码编辑
 - [ ] 添加主题切换功能
 - [ ] 添加性能监控面板

@@ -1,4 +1,4 @@
-const REACT_ELEMENT_TYPE = Symbol.for('react.element');
+const REACT_ELEMENT_TYPE = Symbol.for('react.transitional.element');
 
 export const Fragment = Symbol.for('react.fragment');
 
