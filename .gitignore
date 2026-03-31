@@ -1,6 +1,6 @@
 dev
 dist
-types
+/types
 node_modules
 
 /docs
