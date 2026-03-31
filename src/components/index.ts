@@ -11,6 +11,7 @@ export { Canvas as LeaferCanvas } from './LeaferCanvas';
 export { Path } from './Path';
 export { Pen } from './Pen';
 export { Box } from './Box';
+export { Frame } from './Frame';
 
 export type { LeaferProps } from './Leafer';
 export type { RectProps } from './Rect';
@@ -25,3 +26,4 @@ export type { CanvasProps } from './LeaferCanvas';
 export type { PathProps } from './Path';
 export type { PenProps } from './Pen';
 export type { BoxProps } from './Box';
+export type { FrameProps } from './Frame';

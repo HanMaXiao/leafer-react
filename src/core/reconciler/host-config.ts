@@ -1,9 +1,9 @@
 import { DefaultEventPriority } from 'react-reconciler/constants';
 import { getElement } from '../renderer/element-registry';
 import type { LeaferHostInstance, LeaferRootContainer } from './types';
-import { Group, Box } from '@leafer-ui/core';
+import { Group, Frame } from '@leafer-ui/core';
 
-// HTML container tags that map to Leafer Group/Box
+// HTML container tags that map to Leafer Group/Frame
 const HTML_CONTAINER_TAGS = new Set(['div', 'span', 'section', 'article', 'main', 'header', 'footer', 'nav', 'aside']);
 
 function isVisualContainer(props: Record<string, any>): boolean {
@@ -119,7 +119,7 @@ export const hostConfig = {
 
     // HTML container tags → Group (no visual) or Box (has fill/stroke/borderRadius)
     if (HTML_CONTAINER_TAGS.has(type)) {
-      const ElementClass = isVisualContainer(restProps) ? Box : Group;
+      const ElementClass = isVisualContainer(restProps) ? Frame : Group;
       const instance = new ElementClass(restProps);
       applyProps(instance, restProps);
       return { instance, type, props: restProps };

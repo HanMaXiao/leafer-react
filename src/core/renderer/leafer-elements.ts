@@ -11,6 +11,7 @@ import {
   Path as LeaferPath,
   Pen as LeaferPen,
   Box as LeaferBox,
+  Frame as LeaferFrame,
 } from '@leafer-ui/core';
 import { registerElement } from './element-registry';
 // 注册 Leafer 原生元素
@@ -26,6 +27,7 @@ registerElement('Canvas', LeaferCanvas as any);
 registerElement('Path', LeaferPath as any);
 registerElement('Pen', LeaferPen as any);
 registerElement('Box', LeaferBox as any);
+registerElement('Frame', LeaferFrame as any);
 // 可扩展更多元素
 export function registerLeaferElements(): void {
   // 已在导入时注册
