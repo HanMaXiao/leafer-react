@@ -216,11 +216,17 @@ pnpm run dev:page
 - **Animation**: 状态驱动动画
 
 ## RoadMap
-
+### leafer-react
 1:支持更多leafer元素
 2:实现完整的React Reconciler(解析复杂React组件)
 3:开发leafer-react调试工具
 
+### leafer-react-playground
+- [ ] 添加 Monaco 编辑器支持实时代码编辑
+- [ ] 添加主题切换功能
+- [ ] 添加性能监控面板
+- [ ] 导出示例代码功能
+- [ ] 部署到 GitHub Pages
 ## 许可证
 
 MIT
