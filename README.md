@@ -247,6 +247,8 @@ pnpm run dev:page   # 启动 Playground
 
 优化Reconciler中解析Backgroundcolor
 
+修复leafer元素点击后React组件异常BUG
+
 ## 路线图
 ### Leafer-React
 - [ ] 支持更多Leafer基础元素
