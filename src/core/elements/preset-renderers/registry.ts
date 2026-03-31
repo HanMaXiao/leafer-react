@@ -32,3 +32,10 @@ export function findPresetRenderer(component: any, props: Record<string, any>): 
 export function clearPresetRenderers(): void {
   renderers.length = 0;
 }
+
+// Register built-in preset renderers
+import { CardRenderer } from './CardRenderer';
+import { ButtonRenderer } from './ButtonRenderer';
+
+registerPresetRenderer(new CardRenderer());
+registerPresetRenderer(new ButtonRenderer());
