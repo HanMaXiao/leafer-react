@@ -1,6 +1,14 @@
 import { DefaultEventPriority } from 'react-reconciler/constants';
 import { getElement } from '../renderer/element-registry';
 import type { LeaferHostInstance, LeaferRootContainer } from './types';
+import { Group, Box } from '@leafer-ui/core';
+
+// HTML container tags that map to Leafer Group/Box
+const HTML_CONTAINER_TAGS = new Set(['div', 'span', 'section', 'article', 'main', 'header', 'footer', 'nav', 'aside']);
+
+function isVisualContainer(props: Record<string, any>): boolean {
+  return 'fill' in props || 'stroke' in props || 'borderRadius' in props;
+}
 
 // Event name mapping: React style → Leafer style
 const EVENT_NAME_MAP: Record<string, string> = {
@@ -107,8 +115,18 @@ export const hostConfig = {
     _hostContext: any,
     _internalHandle: any,
   ): LeaferHostInstance {
-    const ElementClass = getElement(type);
     const { children, ...restProps } = props;
+
+    // HTML container tags → Group (no visual) or Box (has fill/stroke/borderRadius)
+    if (HTML_CONTAINER_TAGS.has(type)) {
+      const ElementClass = isVisualContainer(restProps) ? Box : Group;
+      const instance = new ElementClass(restProps);
+      applyProps(instance, restProps);
+      return { instance, type, props: restProps };
+    }
+
+    // Leafer native elements from registry
+    const ElementClass = getElement(type);
     const instance = new ElementClass(restProps);
     applyProps(instance, restProps);
 

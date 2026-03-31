@@ -21,11 +21,11 @@ export default {
         'react-dom': 'ReactDOM',
         'react-dom/client': 'ReactDOM',
         '@leafer-ui/core': 'Leafer',
-        'html2canvas': 'html2canvas'
+        '@leafer-ui/web': 'Leafer'
       }
     }
   ],
-  external: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime', '@leafer-ui/core', '@leafer-ui/interface', 'html2canvas', 'tslib'],
+  external: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime', 'react-reconciler', 'react-reconciler/constants', '@leafer-ui/core', '@leafer-ui/interface', '@leafer-ui/web', 'tslib'],
   plugins: [
     resolve(),
     typescript({
