@@ -200,20 +200,26 @@ function MyComponent() {
 
 ## Playground
 
-Try the interactive playground to see leafer-react in action:
+实时预览Leafer React插件功能演练场
 
 ```bash
 pnpm run dev:page
 ```
 
-Open http://localhost:3000 to explore examples.
+打开 http://localhost:3000 测试示例(有人聚合下演练场吗)
 
 ### Available Examples
 
-- **Basic JSX**: Create graphics using JSX syntax
-- **React Component**: Render React UI on Canvas
-- **Interactive**: Events and interactions
-- **Animation**: State-driven animations
+- **Basic JSX**: 使用React语法创建图形
+- **React Component**: 在Leafer画布上渲染React组件
+- **Interactive**: 事件和交互属性
+- **Animation**: 状态驱动动画
+
+## RoadMap
+
+1:支持更多leafer元素
+2:实现完整的React Reconciler(解析复杂React组件)
+3:开发leafer-react调试工具
 
 ## 许可证
 
