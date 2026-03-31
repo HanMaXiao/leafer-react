@@ -18,3 +18,4 @@ pnpm-lock.yaml
 .eslintcache
 *.tsbuildinfo
 *.log
+.claude/settings.local.json

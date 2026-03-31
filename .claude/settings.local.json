@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__web-reader__webReader",
+      "WebSearch",
+      "Bash(pnpm add:*)",
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)",
+      "Bash(node -e \"const r = require\\(''react-reconciler''\\); console.log\\(typeof r\\)\")",
+      "Bash(node -e \"const j=require\\(''''fs''''\\).readFileSync\\(''''/dev/stdin'''',''''utf8''''\\); const p=JSON.parse\\(j\\); console.log\\(''''version:'''', p.version\\)\")",
+      "Bash(node -e \"const p = require\\(''./node_modules/react-reconciler/package.json''\\); console.log\\(''version:'', p.version\\)\")",
+      "Bash(npx vitest:*)",
+      "Bash(node -e \":*)",
+      "Bash(node -e \"const R = require\\(''react-reconciler''\\); console.log\\(Object.keys\\(R\\)\\)\")"
+    ]
+  }
+}

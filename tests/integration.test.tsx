@@ -1,28 +1,24 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { registerElement } from '../src/core/renderer/element-registry';
 import { h } from '../src/core/renderer/jsx-runtime';
-import { Rect, Text, Group } from '@leafer-ui/core';
+import '@leafer-ui/web';
+import '../src/core/renderer/leafer-elements';
 
 describe('integration tests', () => {
-  beforeEach(() => {
-    registerElement('Rect', Rect as any);
-    registerElement('Text', Text as any);
-    registerElement('Group', Group as any);
-  });
-
-  it('should create nested structure', () => {
-    const group = h('Group', { x: 100, y: 100 },
+  it('should create element descriptors for nested structure', () => {
+    const element = h('Group', { x: 100, y: 100 },
       h('Rect', { width: 100, height: 100, fill: 'red' }),
       h('Text', { x: 10, y: 10, text: 'Hello' })
     );
 
-    expect(group).toBeInstanceOf(Group);
-    expect(group.x).toBe(100);
-    expect(group.children).toHaveLength(2);
+    // h() now returns React element descriptors
+    expect(element.type).toBe('Group');
+    expect(element.props.x).toBe(100);
+    expect(element.props.y).toBe(100);
+    expect(element.props.children).toHaveLength(2);
   });
 
   it('should handle props correctly', () => {
-    const rect = h('Rect', {
+    const element = h('Rect', {
       x: 50,
       y: 50,
       width: 200,
@@ -33,9 +29,9 @@ describe('integration tests', () => {
       draggable: true,
     });
 
-    expect(rect).toBeInstanceOf(Rect);
-    expect(rect.x).toBe(50);
-    expect(rect.fill).toBe('blue');
-    expect(rect.draggable).toBe(true);
+    expect(element.type).toBe('Rect');
+    expect(element.props.x).toBe(50);
+    expect(element.props.fill).toBe('blue');
+    expect(element.props.draggable).toBe(true);
   });
 });
