@@ -1,5 +1,4 @@
 import type { Reconciler } from 'react-reconciler';
-import type { App } from '@leafer-ui/core';
 
 /**
  * A Leafer host instance wrapper.
@@ -16,11 +15,11 @@ export interface LeaferHostInstance {
 
 /**
  * The root container passed to the reconciler.
- * Wraps a Leafer App instance.
+ * Wraps a Leafer App or Leafer instance.
  */
 export interface LeaferRootContainer {
   /** The Leafer App / Leafer instance */
-  app: App;
+  app: any;
   /** All top-level children managed by reconciler */
   children: LeaferHostInstance[];
 }
