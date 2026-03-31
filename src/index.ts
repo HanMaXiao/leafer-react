@@ -6,3 +6,6 @@ export { useLeafer } from './hooks/useLeafer';
 export { useEditor } from './hooks/useEditor';
 export { useReactComponent } from './hooks/useReactComponent';
 export { LeaferContext } from './context/LeaferContext';
+
+export type { IPresetRenderer } from './core/elements/preset-renderers';
+export { registerPresetRenderer, clearPresetRenderers, CardRenderer, ButtonRenderer } from './core/elements/preset-renderers';
