@@ -1,4 +1,4 @@
-import { h } from '../core/renderer/jsx-runtime';
+import { defineLeaferElement } from './factory';
 import { BaseShapeProps, InteractiveProps, ClickEventProps } from './types';
 
 export interface PathProps extends
@@ -10,6 +10,4 @@ export interface PathProps extends
   children?: never;
 }
 
-export function Path(props: PathProps): any {
-  return h('Path', props);
-}
+export const Path = defineLeaferElement<PathProps>('Path');

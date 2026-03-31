@@ -1,4 +1,4 @@
-import { h } from '../core/renderer/jsx-runtime';
+import { defineLeaferElement } from './factory';
 import { BaseShapeProps, InteractiveProps, ClickEventProps } from './types';
 
 export interface LineProps extends
@@ -9,6 +9,4 @@ export interface LineProps extends
   children?: never;
 }
 
-export function Line(props: LineProps): any {
-  return h('Line', props);
-}
+export const Line = defineLeaferElement<LineProps>('Line');

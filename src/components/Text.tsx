@@ -1,4 +1,4 @@
-import { h } from '../core/renderer/jsx-runtime';
+import { defineLeaferElement } from './factory';
 import { BaseShapeProps } from './types';
 
 export interface TextProps extends BaseShapeProps {
@@ -10,6 +10,6 @@ export interface TextProps extends BaseShapeProps {
   children?: any;
 }
 
-export function Text(props: TextProps): any {
-  return h('Text', { ...props, text: props.text ?? props.children });
-}
+export const Text = defineLeaferElement<TextProps>('Text', {
+  transform: (props) => ({ ...props, text: props.text ?? props.children }),
+});

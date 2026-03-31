@@ -1,4 +1,4 @@
-import { h } from '../core/renderer/jsx-runtime';
+import { defineLeaferElement } from './factory';
 import { BaseShapeProps, RoundedCornerProps, FullInteractiveProps, EventProps } from './types';
 
 export interface RectProps extends
@@ -6,9 +6,7 @@ export interface RectProps extends
   RoundedCornerProps,
   FullInteractiveProps,
   EventProps {
-  children?: any;
+  children?: never;
 }
 
-export function Rect(props: RectProps): any {
-  return h('Rect', props);
-}
+export const Rect = defineLeaferElement<RectProps>('Rect');

@@ -1,4 +1,4 @@
-import { h } from '../core/renderer/jsx-runtime';
+import { defineLeaferElement } from './factory';
 import { BaseShapeProps, RoundedCornerProps, InteractiveProps, ClickEventProps } from './types';
 
 export interface CanvasProps extends
@@ -9,6 +9,4 @@ export interface CanvasProps extends
   children?: never;
 }
 
-export function Canvas(props: CanvasProps): any {
-  return h('Canvas', props);
-}
+export const Canvas = defineLeaferElement<CanvasProps>('Canvas');
