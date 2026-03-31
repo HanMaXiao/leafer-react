@@ -206,7 +206,7 @@ function MyComponent() {
 pnpm run dev:page
 ```
 
-打开 http://localhost:3000 测试示例(有人聚合下演练场吗)
+打开 <http://localhost:3000> 测试示例(有人聚合下演练场吗)
 
 ### Available Examples
 
@@ -214,15 +214,13 @@ pnpm run dev:page
 - **React Component**: 在Leafer画布上渲染React组件
 - **Interactive**: 事件和交互属性
 - **Animation**: 状态驱动动画
+
 ## Goal
+
 1：使用插件提供的leafer基础元素组件构建leafer应用和基础绘图；<Rect><Rect/>
-2：渲染由leafer基础元素组件组合的复合组件；
-<Rect>
-  <Rect/>
-  <Text/>
-<Rect/>
-3：渲染基础React组件如
-<Card>
+2：渲染由leafer基础元素组件组合的复合组件； <Rect> <Rect/> <Text/> <Rect/>
+3：渲染基础React组件如 <Card>
+
   <div>...<div/>
 <Card/>;
 4:渲染复合组件，如
@@ -242,24 +240,30 @@ const Radar = registerComponent('Radar', RadarChart);
 
 // 在 TSX 中使用
 function App() {
-  return (
-    <Leafer>
-      <Radar x={100} y={100} data={[1, 2, 3, 4, 5]} />
-    </Leafer>
-  );
+return ( <Leafer>
+\<Radar x={100} y={100} data={\[1, 2, 3, 4, 5]} /> </Leafer>
+);
 }
+
 ## RoadMap
+
 ### leafer-react
+
 1:支持更多leafer元素
+
 2:实现完整的React Reconciler(解析复杂React组件)
+
+
 3:开发leafer-react调试工具
 
 ### leafer-react-playground
+
 - [ ] 添加 Monaco 编辑器支持实时代码编辑
 - [ ] 添加主题切换功能
 - [ ] 添加性能监控面板
 - [ ] 导出示例代码功能
 - [ ] 部署到 GitHub Pages
+
 ## 许可证
 
 MIT
