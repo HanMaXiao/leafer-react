@@ -4,6 +4,7 @@ import { createRoot, Root } from 'react-dom/client';
 import html2canvas from 'html2canvas';
 import { hashProps } from '../../utils/hash';
 import { hasPropsChanged } from '../../utils/props-comparator';
+import { findPresetRenderer } from './preset-renderers/registry';
 
 interface IReactComponentInputData extends IUIInputData {
   component?: any;
@@ -69,6 +70,16 @@ class ReactComponent extends UI {
 
     if (!component) {
       this.renderPlaceholder(context, x, y, width, height, 'No component');
+      return;
+    }
+
+    // Check for preset renderer — bypass html2canvas entirely
+    const presetRenderer = findPresetRenderer(component, props);
+    if (presetRenderer) {
+      context.save();
+      context.translate(x, y);
+      presetRenderer.render(context, props, width, height);
+      context.restore();
       return;
     }
 
