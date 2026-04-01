@@ -128,8 +128,8 @@ export const EventTest: React.FC = () => {
           width={120}
           height={100}
           fill="transparent"
-          onMouseEnter={() => setEllipseColor('#ff8787')}
-          onMouseLeave={() => setEllipseColor('#ff6b6b')}
+          onPointerEnter={() => setEllipseColor('#ff8787')}
+          onPointerLeave={() => setEllipseColor('#ff6b6b')}
         />
       </Group>
 
