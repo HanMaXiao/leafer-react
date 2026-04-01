@@ -1,13 +1,14 @@
+import { IRect } from '@leafer-ui/interface';
 import { defineLeaferElement } from './factory';
-import { BaseShapeProps, RoundedCornerProps, FullInteractiveProps, EventProps, TransformProps } from './types';
-
-export interface RectProps extends
-  BaseShapeProps,
-  RoundedCornerProps,
-  FullInteractiveProps,
-  TransformProps,
-  EventProps {
-  children?: never;
-}
-
-export const Rect = defineLeaferElement<RectProps>('Rect');
+import{Rect} from '@leafer-ui/core';
+import { LeaferElementProps } from '../utils/type';
+// export interface RectProps extends
+//   BaseShapeProps,
+//   RoundedCornerProps,
+//   FullInteractiveProps,
+//   TransformProps,
+//   EventProps {
+//   children?: never;
+// }
+type RectProps=LeaferElementProps<Rect, IRect>;
+export const RectElement = defineLeaferElement<RectProps>('Rect');

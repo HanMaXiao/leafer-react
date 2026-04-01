@@ -1,13 +1,8 @@
+import { Box} from '@leafer-ui/core';
+import { LeaferElementProps } from '../utils/type';
 import { defineLeaferElement } from './factory';
-import { BaseShapeProps, RoundedCornerProps, OverflowProps, InteractiveProps, ClickEventProps } from './types';
+import { IBox } from '@leafer-ui/web';
 
-export interface BoxProps extends
-  BaseShapeProps,
-  RoundedCornerProps,
-  OverflowProps,
-  InteractiveProps,
-  ClickEventProps {
-  children?: any;
-}
+type BoxProps = LeaferElementProps<Box, IBox>;
 
-export const Box = defineLeaferElement<BoxProps>('Box');
+export const BoxElement = defineLeaferElement<BoxProps>('Box');

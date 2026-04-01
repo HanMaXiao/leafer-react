@@ -1,12 +1,9 @@
+import { Ellipse } from '@leafer-ui/draw';
+import { LeaferElementProps } from '../utils/type';
 import { defineLeaferElement } from './factory';
-import { BaseShapeProps, RoundedCornerProps, FullInteractiveProps, EventProps } from './types';
+import { IEllipse } from '@leafer-ui/interface';
 
-export interface EllipseProps extends
-  BaseShapeProps,
-  RoundedCornerProps,
-  FullInteractiveProps,
-  EventProps {
-  children?: never;
-}
 
-export const Ellipse = defineLeaferElement<EllipseProps>('Ellipse');
+type EllipseProps=LeaferElementProps<Ellipse, IEllipse>;
+
+export const EllipseElement = defineLeaferElement<EllipseProps>('Ellipse');
