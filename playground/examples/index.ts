@@ -8,7 +8,7 @@ import { ReactCompoundComponent, ReactCompoundComponentCode } from './ReactCompo
 import { Interactive, InteractiveCode } from './Interactive';
 import { Animation, AnimationCode } from './Animation';
 import { EventTest, EventTestCode } from './EventTest';
-
+import { CustomElement, CustomElementCode } from './CustomElement';
 export const EXAMPLES: Example[] = [
   {
     id: 'leafer-app',
@@ -45,33 +45,34 @@ export const EXAMPLES: Example[] = [
     component: ReactCompoundComponent,
     code: ReactCompoundComponentCode,
   },
-  // {
-  //   id: 'custom-element',
-  //   name: '6. 自定义元素',
-  //   description: '自定义 Leafer 元素注册成 React 组件',
-  //   component: CustomElement,
-  //   code: CustomElementCode,
-  // },
+ 
   {
     id: 'interactive',
-    name: '交互事件',
+    name: '6.交互事件',
     description: '点击、拖拽等交互',
     component: Interactive,
     code: InteractiveCode,
   },
   {
     id: 'animation',
-    name: '动画效果',
+    name: '7.动画效果',
     description: '状态驱动动画',
     component: Animation,
     code: AnimationCode,
   },
   {
     id: 'event-test',
-    name: '事件测试',
+    name: '8.事件测试',
     description: '测试各种事件',
     component: EventTest,
     code: EventTestCode,
+  },
+   {
+    id: 'custom-element',
+     name: '9. 自定义元素',
+    description: '自定义 Leafer 元素注册成 React 组件',
+    component: CustomElement,
+    code: CustomElementCode,
   },
 ];
 

@@ -1,12 +1,8 @@
+import { Line as LineClass } from '@leafer-ui/core';
+import type { ILineInputData } from '@leafer-ui/interface';
+import { LeaferElementProps } from '../utils/type';
 import { defineLeaferElement } from './factory';
-import { BaseShapeProps, InteractiveProps, ClickEventProps } from './types';
 
-export interface LineProps extends
-  Omit<BaseShapeProps, 'fill'>,
-  InteractiveProps,
-  ClickEventProps {
-  points?: number[][];
-  children?: never;
-}
+export type LineProps = LeaferElementProps<LineClass, ILineInputData>;
 
 export const Line = defineLeaferElement<LineProps>('Line');

@@ -1,14 +1,9 @@
+import { Pen as PenClass } from '@leafer-ui/core';
+import type { IPenInputData } from '@leafer-ui/interface';
+import { LeaferElementProps } from '../utils/type';
 import { defineLeaferElement } from './factory';
-import { BaseShapeProps, InteractiveProps, ClickEventProps } from './types';
 
-export interface PenProps extends
-  BaseShapeProps,
-  InteractiveProps,
-  ClickEventProps {
-  path?: string;
-  data?: string;
-  children?: never;
-}
+export type PenProps = LeaferElementProps<PenClass, IPenInputData>;
 
 export const Pen = defineLeaferElement<PenProps>('Pen', {
   transform: (props) => {

@@ -1,10 +1,8 @@
+import { Group as GroupClass } from '@leafer-ui/core';
+import type { IGroupInputData } from '@leafer-ui/interface';
+import { LeaferElementProps } from '../utils/type';
 import { defineLeaferElement } from './factory';
-import { TransformProps } from './types';
 
-export interface GroupProps extends TransformProps {
-  x?: number;
-  y?: number;
-  children?: any;
-}
+export type GroupProps = LeaferElementProps<GroupClass, IGroupInputData>;
 
 export const Group = defineLeaferElement<GroupProps>('Group');

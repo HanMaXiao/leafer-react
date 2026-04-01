@@ -48,13 +48,13 @@ export const Interactive: React.FC<{ debug?: boolean }> = ({ debug }) => {
         <Rect
           width={200}
           height={100}
-          fill={hovered === 'rect2' ? '#7780f0' : '#667eea'}
+          fill={hovered === 'rect2' ? '#f40ea7' : '#667eea'}
           stroke="#5a67d8"
           strokeWidth={2}
           cornerRadius={12}
+          hittable={true}
           onClick={() => setClicks(c => ({ ...c, rect2: c.rect2 + 1 }))}
-          onMouseEnter={() => setHovered('rect2')}
-          onMouseLeave={() => setHovered(null)}
+          
         />
         <Text
           x={50}

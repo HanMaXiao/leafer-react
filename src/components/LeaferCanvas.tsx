@@ -1,12 +1,8 @@
+import { Canvas as CanvasClass } from '@leafer-ui/draw';
+import type { ICanvasInputData } from '@leafer-ui/interface';
+import { LeaferElementProps } from '../utils/type';
 import { defineLeaferElement } from './factory';
-import { BaseShapeProps, RoundedCornerProps, InteractiveProps, ClickEventProps } from './types';
 
-export interface CanvasProps extends
-  BaseShapeProps,
-  RoundedCornerProps,
-  InteractiveProps,
-  ClickEventProps {
-  children?: never;
-}
+export type CanvasProps = LeaferElementProps<CanvasClass, ICanvasInputData>;
 
 export const Canvas = defineLeaferElement<CanvasProps>('Canvas');

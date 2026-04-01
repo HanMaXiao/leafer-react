@@ -1,12 +1,8 @@
+import { Polygon as PolygonClass } from '@leafer-ui/core';
+import type { IPolygonInputData } from '@leafer-ui/interface';
+import { LeaferElementProps } from '../utils/type';
 import { defineLeaferElement } from './factory';
-import { BaseShapeProps, InteractiveProps, ClickEventProps } from './types';
 
-export interface PolygonProps extends
-  BaseShapeProps,
-  InteractiveProps,
-  ClickEventProps {
-  points?: number[][];
-  children?: never;
-}
+export type PolygonProps = LeaferElementProps<PolygonClass, IPolygonInputData>;
 
 export const Polygon = defineLeaferElement<PolygonProps>('Polygon');

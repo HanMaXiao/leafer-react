@@ -7,8 +7,8 @@ import { Leafer, Rect, Text, Group } from '../../src/index';
 function Card({ title, color }: { title: string; color: string }) {
   return (
     <div>
-      <Rect width={40} height={40} x={10} y={10} fill="#fff" opacity={0.3} cornerRadius={8} />
-      <Text x={60} y={15} text={title} fontSize={16} fill="#fff" fontWeight="bold" />
+      <Rect width={40} height={40} x={10} y={10} fill={color} opacity={0.3} cornerRadius={8} />
+      <Text x={60} y={15} text={title} fontSize={16} fill={color} fontWeight="bold" />
     </div>
   );
 }

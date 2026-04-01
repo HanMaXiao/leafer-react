@@ -1,13 +1,8 @@
+import { Path as PathClass } from '@leafer-ui/draw';
+import type { IPathInputData } from '@leafer-ui/interface';
+import { LeaferElementProps } from '../utils/type';
 import { defineLeaferElement } from './factory';
-import { BaseShapeProps, InteractiveProps, ClickEventProps } from './types';
 
-export interface PathProps extends
-  BaseShapeProps,
-  InteractiveProps,
-  ClickEventProps {
-  path?: string;
-  data?: string;
-  children?: never;
-}
+export type PathProps = LeaferElementProps<PathClass, IPathInputData>;
 
 export const Path = defineLeaferElement<PathProps>('Path');

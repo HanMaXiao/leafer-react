@@ -1,3 +1,7 @@
+import { h } from './jsx-runtime';
+
+type ComponentFunction<P> = (props: P) => any;
+
 const registry = new Map<string, new (props: any) => any>();
 
 export function registerElement(
@@ -17,29 +21,43 @@ export function getElement(tag: string): new (props: any) => any {
 
 /**
  * Register a custom Leafer UI class as a JSX element.
- * After registration, you can use it like: <MyCustomElement {...props} />
+ * Returns a React component that can be used in JSX.
  *
  * @example
  * ```tsx
  * import { registerComponent } from 'leafer-react'
- * import { MyChart } from './MyChart'
+ * import { UI, registerUI } from '@leafer-ui/core'
  *
- * registerComponent('MyChart', MyChart)
+ * @registerUI()
+ * class Diamond extends UI {
+ *   public get __tag() { return 'Diamond'; }
+ *   // ... custom draw logic
+ * }
+ *
+ * // Register and get a React component
+ * const DiamondElement = registerComponent<DiamondProps>('Diamond', Diamond)
  *
  * // Now usable in JSX:
  * <Leafer>
- *   <MyChart data={[1, 2, 3]} />
+ *   <DiamondElement width={80} height={80} fill="#667eea" />
  * </Leafer>
  * ```
  */
-export function registerComponent(
+export function registerComponent<P = any>(
   tag: string,
   ElementClass: new (props: any) => any
-): void {
+): ComponentFunction<P> {
   if (registry.has(tag)) {
     console.warn(`[leafer-react] Component "${tag}" is already registered. It will be overwritten.`);
   }
   registry.set(tag, ElementClass);
+
+  function Component(props: P): any {
+    return h(tag, props);
+  }
+
+  Component.displayName = tag;
+  return Component;
 }
 
 export { registry as elementRegistry };

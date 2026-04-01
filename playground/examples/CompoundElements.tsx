@@ -8,10 +8,10 @@ function Card({ x, y, title, color }: { x: number; y: number; title: string; col
   return (
     <Group x={x} y={y}>
       <Rect width={180} height={100} fill={color} cornerRadius={12} />
-      <Rect x={10} y={10} width={40} height={40} fill="#fff" opacity={0.3} cornerRadius={8} />
-      <Text x={60} y={15} text={title} fontSize={16} fill="#fff" fontWeight="bold" />
-      <Text x={60} y={40} text="复合元素组合" fontSize={12} fill="rgba(255,255,255,0.8)" />
-      <Ellipse x={140} y={70} width={30} height={20} fill="rgba(255,255,255,0.25)" />
+      <Rect x={10} y={10} width={40} height={40} fill="#ee1322" opacity={0.3} cornerRadius={8} />
+      <Text x={60} y={15} text={title} fontSize={16} fill="#e100ff" fontWeight="bold" />
+      <Text x={60} y={40} text="复合元素组合" fontSize={12} fill="rgba(30, 24, 24, 0.8)" />
+      <Ellipse x={140} y={70} width={30} height={20} fill="rgba(165, 29, 29, 0.25)" />
     </Group>
   );
 }
