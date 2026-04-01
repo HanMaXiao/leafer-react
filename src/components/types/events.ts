@@ -4,27 +4,11 @@
 export type PointerEventHandler = (e: any) => void;
 
 /**
- * Mouse event handler type
- */
-export type MouseEventHandler = (e: any) => void;
-
-/**
  * Click and tap event handlers
  */
 export interface ClickEventProps {
   onClick?: (e: any) => void;
   onDoubleClick?: (e: any) => void;
-}
-
-/**
- * Mouse button event handlers
- */
-export interface MouseEventProps {
-  onMouseDown?: MouseEventHandler;
-  onMouseUp?: MouseEventHandler;
-  onMouseMove?: MouseEventHandler;
-  onMouseEnter?: MouseEventHandler;
-  onMouseLeave?: MouseEventHandler;
 }
 
 /**
@@ -39,6 +23,6 @@ export interface PointerEventProps {
 }
 
 /**
- * Combined event properties for all pointer/mouse interactions
+ * Combined event properties for all pointer interactions
  */
-export interface EventProps extends ClickEventProps, MouseEventProps, PointerEventProps {}
+export interface EventProps extends ClickEventProps, PointerEventProps {}
