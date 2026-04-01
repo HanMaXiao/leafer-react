@@ -100,8 +100,8 @@ export const hostConfig = {
   supportsHydration: false,
 
   // --- Core Methods ---
-  getRootHostContext(): null {
-    return null;
+  getRootHostContext(): Record<string, unknown> {
+    return {};
   },
 
   getChildHostContext(parentHostContext: any): any {
@@ -282,6 +282,7 @@ export const hostConfig = {
     childHost: LeaferHostInstance,
   ): void {
     if (childHost.type === '#text') return;
+    console.log('[reconciler] appendChildToContainer', childHost.type);
     container.app.add(childHost.instance);
     container.children.push(childHost);
   },
@@ -338,6 +339,7 @@ export const hostConfig = {
     childHost: LeaferHostInstance,
   ): void {
     if (childHost.type === '#text') return;
+    console.log('[reconciler] removeChildFromContainer', childHost.type);
     removeEvents(childHost.instance, childHost.props);
     childHost.instance.remove();
     const idx = container.children.indexOf(childHost);
@@ -351,7 +353,17 @@ export const hostConfig = {
     oldProps: Record<string, any>,
     newProps: Record<string, any>,
   ): void {
+    console.log('[reconciler] commitUpdate', type, {
+      oldKeys: Object.keys(oldProps),
+      newKeys: Object.keys(newProps),
+      leaferParent: hostInstance.instance?.parent?.constructor?.name,
+      leaferChildrenCount: hostInstance.instance?.children?.length,
+    });
     updateProps(hostInstance.instance, oldProps, newProps);
+    console.log('[reconciler] after update:', {
+      parent: hostInstance.instance?.parent?.constructor?.name,
+      childrenCount: hostInstance.instance?.children?.length,
+    });
     hostInstance.props = newProps;
   },
 
@@ -372,6 +384,7 @@ export const hostConfig = {
   },
 
   clearContainer(container: LeaferRootContainer): void {
+    console.log('[reconciler] clearContainer', container.children.length, 'children');
     for (const child of [...container.children]) {
       if (child.type === '#text') continue;
       removeEvents(child.instance, child.props);

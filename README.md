@@ -243,7 +243,7 @@ pnpm run dev:page   # 启动 Playground
 ```
 
 ## BUG&&优化
-修复自定义元素没有Props无法作为JSX使用的问题
+~~修复自定义元素没有Props无法作为JSX使用的问题~~ ✅ 已修复
 
 优化Reconciler中解析Backgroundcolor
 
