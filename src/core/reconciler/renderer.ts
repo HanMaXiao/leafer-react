@@ -16,7 +16,6 @@ export function render(element: ReactNode, app: any): void {
   let entry = roots.get(app);
 
   if (!entry) {
-    console.log('[reconciler] render - CREATING new container');
     const container: LeaferRootContainer = { app, children: [] };
     const root = reconciler.createContainer(
       container,
@@ -32,14 +31,10 @@ export function render(element: ReactNode, app: any): void {
     );
     entry = { container, root };
     roots.set(app, entry);
-  } else {
-    console.log('[reconciler] render - UPDATING existing container');
   }
 
   (reconciler as any).updateContainerSync(element, entry.root, null, null);
-  const flushed = (reconciler as any).flushSyncWork();
-  console.log('[reconciler] flushSyncWork returned:', flushed);
-  console.log('[reconciler] app children after update:', app.children?.length, app.children?.map((c: any) => c.constructor?.name));
+  (reconciler as any).flushSyncWork();
 }
 
 /**

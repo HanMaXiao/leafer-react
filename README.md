@@ -243,11 +243,11 @@ pnpm run dev:page   # 启动 Playground
 ```
 
 ## BUG&&优化
-~~修复自定义元素没有Props无法作为JSX使用的问题~~ ✅ 已修复
+~~修复自定义元素没有Props无法作为JSX使用的问题~~  未修复
 
-优化Reconciler中解析Backgroundcolor
+优化Reconciler中解析Backgroundcolor 未修复
 
-修复leafer元素点击后React组件异常BUG
+修复leafer元素点击后React组件异常BUG 未修复
 
 ## 路线图
 ### Leafer-React
