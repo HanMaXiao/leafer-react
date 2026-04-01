@@ -1,16 +1,8 @@
-import { Image } from '@leafer-ui/draw';
+import { Image as ImageClass } from '@leafer-ui/draw';
+import type { IImageInputData } from '@leafer-ui/interface';
 import { LeaferElementProps } from '../utils/type';
 import { defineLeaferElement } from './factory';
-import { IImage } from '@leafer-ui/interface';
 
-// export interface ImageProps extends
-//   BaseShapeProps,
-//   RoundedCornerProps,
-//   InteractiveProps,
-//   ClickEventProps {
-//   url?: string;
-//   src?: string;
-//   children?: never;
-// }
-type ImageProps=LeaferElementProps<Image, IImage>;
-export const ImageElement = defineLeaferElement<ImageProps>('Image');
+export type ImageProps = LeaferElementProps<ImageClass, IImageInputData>;
+
+export const Image = defineLeaferElement<ImageProps>('Image');

@@ -3,9 +3,8 @@
 import React from 'react';
 import { Leafer, Text, Group, registerComponent } from '../../src/index';
 import { UI, registerUI } from '@leafer-ui/core';
-// import { BaseShapeProps } from '../../src/components/types';
 
-interface DiamondProps extends BaseShapeProps{
+interface DiamondProps {
   width?: number;
   height?: number;
   fill?: string;

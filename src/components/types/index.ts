@@ -1,3 +1,1 @@
-// export * from './base';
-// export * from './interactive';
-// export * from './events';
+// Legacy type definitions — replaced by LeaferElementProps<T, K> in src/utils/type.ts

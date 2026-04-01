@@ -1,15 +1,8 @@
-import { IStar } from '@leafer-ui/interface';
-import { defineLeaferElement } from './factory';
-import { Star } from '@leafer-ui/core';
+import { Star as StarClass } from '@leafer-ui/core';
+import type { IStarInputData } from '@leafer-ui/interface';
 import { LeaferElementProps } from '../utils/type';
+import { defineLeaferElement } from './factory';
 
-// export interface StarProps extends
-//   BaseShapeProps,
-//   FullInteractiveProps,
-//   EventProps {
-//   points?: number;
-//   innerRadius?: number;
-//   children?: never;
-// }
-type StarProps=LeaferElementProps<Star, IStar>;
-export const StarElement = defineLeaferElement<StarProps>('Star');
+export type StarProps = LeaferElementProps<StarClass, IStarInputData>;
+
+export const Star = defineLeaferElement<StarProps>('Star');

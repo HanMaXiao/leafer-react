@@ -1,9 +1,8 @@
-import { Ellipse } from '@leafer-ui/draw';
+import { Ellipse as EllipseClass } from '@leafer-ui/draw';
+import type { IEllipseInputData } from '@leafer-ui/interface';
 import { LeaferElementProps } from '../utils/type';
 import { defineLeaferElement } from './factory';
-import { IEllipse } from '@leafer-ui/interface';
 
+export type EllipseProps = LeaferElementProps<EllipseClass, IEllipseInputData>;
 
-type EllipseProps=LeaferElementProps<Ellipse, IEllipse>;
-
-export const EllipseElement = defineLeaferElement<EllipseProps>('Ellipse');
+export const Ellipse = defineLeaferElement<EllipseProps>('Ellipse');

@@ -21,12 +21,12 @@ export const BasicElements: React.FC<{ debug?: boolean }> = ({ debug }) => {
       </Group>
 
       <Group x={290} y={60}>
-        <Star width={100} height={100} fill="#ffd93d" points={5} />
+        <Star width={100} height={100} fill="#ffd93d" corners={5} />
         <Text y={105} text="Star" fontSize={14} fill="#333" />
       </Group>
 
       <Group x={420} y={60}>
-        <Line points={[[0, 40], [80, 10], [160, 40]]} stroke="#845ef7" strokeWidth={3} />
+        <Line points={[0, 40, 80, 10, 160, 40]} stroke="#845ef7" strokeWidth={3} />
         <Text y={60} text="Line" fontSize={14} fill="#333" />
       </Group>
 

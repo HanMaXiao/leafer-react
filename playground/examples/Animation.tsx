@@ -1,6 +1,6 @@
 // playground/examples/Animation.tsx
 import React, { useState, useEffect } from 'react';
-import { Leafer, Rect, Text } from '@leafer-react';
+import { Leafer, Rect, Text } from '../../src/index';
 
 export const Animation: React.FC<{ debug?: boolean }> = ({ debug }) => {
   const [rotation, setRotation] = useState(0);

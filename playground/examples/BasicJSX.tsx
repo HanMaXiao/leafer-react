@@ -29,7 +29,7 @@ export const BasicJSX: React.FC<{ debug?: boolean }> = ({ debug }) => {
 
       {/* Star - 星形 */}
       <Group x={290} y={60}>
-        <Star width={100} height={100} fill="#ffd93d" stroke="#ffcd02" strokeWidth={2} points={5} />
+        <Star width={100} height={100} fill="#ffd93d" stroke="#ffcd02" strokeWidth={2} corners={5} />
         <Text y={105} text="Star" fontSize={14} fill="#fff" textAlign="center" x={50} />
       </Group>
 
@@ -49,13 +49,13 @@ export const BasicJSX: React.FC<{ debug?: boolean }> = ({ debug }) => {
       {/* Row 2: Path 和 Pen */}
       {/* Path - 路径 */}
       <Group x={50} y={180}>
-        <Path x={0} y={0} width={150} height={80} path="M10,40 Q40,10 75,40 T140,40" fill="none" stroke="#f59e0b" strokeWidth={3} />
+        <Path x={0} y={0} width={150} height={80} path={"M10,40 Q40,10 75,40 T140,40" as any} fill="none" stroke="#f59e0b" strokeWidth={3} />
         <Text y={95} text="Path (曲线)" fontSize={14} fill="#666" />
       </Group>
 
       {/* Pen - 画笔 */}
       <Group x={220} y={180}>
-        <Pen x={0} y={0} width={150} height={80} path="M10,40 L40,10 L70,40 L100,10 L130,40" fill="none" stroke="#8b5cf6" strokeWidth={3} />
+        <Pen x={0} y={0} width={150} height={80} path={"M10,40 L40,10 L70,40 L100,10 L130,40" as any} fill="none" stroke="#8b5cf6" strokeWidth={3} />
         <Text y={95} text="Pen (折线)" fontSize={14} fill="#666" />
       </Group>
 
@@ -64,7 +64,7 @@ export const BasicJSX: React.FC<{ debug?: boolean }> = ({ debug }) => {
         <Text x={20} y={20} text="Box 容器 (可包含子元素)" fontSize={14} fontWeight="bold" fill="#495057" />
         <Rect x={20} y={35} width={80} height={50} fill="#a78bfa" cornerRadius={8} />
         <Ellipse x={115} y={35} width={80} height={50} fill="#f472b6" />
-        <Star x={210} y={35} width={50} height={50} fill="#34d399" points={6} />
+        <Star x={210} y={35} width={50} height={50} fill="#34d399" corners={6} />
         <Polygon x={275} y={35} width={50} height={50} fill="#fbbf24" />
       </Box>
 

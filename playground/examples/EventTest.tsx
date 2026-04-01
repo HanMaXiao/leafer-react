@@ -72,7 +72,7 @@ export const EventTest: React.FC = () => {
           fill="#ffd93d"
           stroke="#ffcd02"
           strokeWidth={2}
-          points={5}
+          corners={5}
         />
         <Text x={50} y={55} text="点击变色" fontSize={14} fill="#fff" textAlign="center" />
         <Star
