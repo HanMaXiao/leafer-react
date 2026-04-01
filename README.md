@@ -26,7 +26,7 @@ function App() {
   return (
     <Leafer fill="#f5f5f5">
       <Group x={100} y={100}>
-        <Rect width={200} height={100} fill="#32cd79" cornerRadius={8} draggable />
+        <Rect width={200} height={100} fill="#32cd79" cornerRadius={8} draggable onClick={() => console.log('clicked')} />
         <Text x={20} y={35} text="Hello Leafer!" fontSize={20} fill="#fff" />
       </Group>
     </Leafer>
@@ -46,7 +46,7 @@ import { Leafer, Rect, Ellipse, Star, Line, Text } from 'leafer-react';
 <Leafer fill="#f5f5f5">
   <Rect width={100} height={80} fill="#32cd79" cornerRadius={8} />
   <Ellipse x={150} width={100} height={80} fill="#ff6b6b" />
-  <Star x={280} width={100} height={100} fill="#ffd93d" points={5} />
+  <Star x={280} width={100} height={100} fill="#ffd93d" corners={5} />
   <Line points={[0, 40, 80, 10, 160, 40]} stroke="#845ef7" strokeWidth={3} />
 </Leafer>
 ```
@@ -123,17 +123,26 @@ function CardList({ items }) {
 通过 `registerComponent` 将自定义 Leafer 图形类注册为 JSX 元素。
 
 ```tsx
-import { registerComponent } from 'leafer-react';
+import { Leafer, Text, Group, registerComponent } from 'leafer-react';
 import { UI, registerUI } from '@leafer-ui/core';
 
-@registerUI()
-class Diamond extends UI {
+// 1. 定义 Props 接口
+interface DiamondProps {
+  width?: number;
+  height?: number;
+  fill?: string;
+  stroke?: string;
+  strokeWidth?: number;
+}
+
+// 2. 定义自定义 Leafer 图形类
+registerUI()(class Diamond extends UI {
   public get __tag() { return 'Diamond'; }
 
-  __draw(canvas) {
+  __draw(canvas: any) {
     const { context } = canvas;
-    const w = this.width || 60;
-    const h = this.height || 60;
+    const w = (this.width as number) || 60;
+    const h = (this.height as number) || 60;
 
     context.beginPath();
     context.moveTo(w / 2, 0);
@@ -143,17 +152,18 @@ class Diamond extends UI {
     context.closePath();
 
     if (this.fill) {
-      context.fillStyle = this.fill;
+      context.fillStyle = this.fill as string;
       context.fill();
     }
   }
-}
+});
 
-// 注册后暂时没有Props无法使用（暂定）
-registerComponent('Diamond', Diamond);
+// 3. 注册为 React 组件（传入泛型获得类型提示）
+const DiamondElement = registerComponent<DiamondProps>('Diamond', Diamond);
 
+// 4. 在 JSX 中使用
 <Leafer>
-  <Diamond width={80} height={80} fill="#667eea" />
+  <DiamondElement width={80} height={80} fill="#667eea" />
 </Leafer>
 ```
 
@@ -189,19 +199,20 @@ registerComponent('Diamond', Diamond);
   draggable={true}
   editable={true}
   onClick={handleClick}
-  onMouseEnter={handleEnter}
-  onMouseLeave={handleLeave}
+  onPointerEnter={handleEnter}
+  onPointerLeave={handleLeave}
 />
 ```
 
 ### registerComponent
 
-注册自定义 Leafer 元素。
+注册自定义 Leafer 元素为 JSX 组件，支持泛型类型推导。
 
 ```tsx
 import { registerComponent } from 'leafer-react';
 
-registerComponent(tag: string, ElementClass: new (props: any) => any);
+// 返回一个带类型的 React 组件
+const DiamondElement = registerComponent<DiamondProps>('Diamond', Diamond);
 ```
 
 ### Hooks
