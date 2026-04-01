@@ -6,6 +6,19 @@ import { Group, Frame } from '@leafer-ui/core';
 // HTML container tags that map to Leafer Group/Frame
 const HTML_CONTAINER_TAGS = new Set(['div', 'span', 'section', 'article', 'main', 'header', 'footer', 'nav', 'aside']);
 
+// React-style prop names → Leafer prop names
+const PROP_ALIAS_MAP: Record<string, string> = {
+  backgroundColor: 'fill',
+};
+
+function normalizeProps(props: Record<string, any>): Record<string, any> {
+  const result: Record<string, any> = {};
+  for (const key of Object.keys(props)) {
+    result[PROP_ALIAS_MAP[key] || key] = props[key];
+  }
+  return result;
+}
+
 function isVisualContainer(props: Record<string, any>): boolean {
   return 'fill' in props || 'stroke' in props || 'borderRadius' in props;
 }
@@ -116,21 +129,22 @@ export const hostConfig = {
     _internalHandle: any,
   ): LeaferHostInstance {
     const { children, ...restProps } = props;
+    const normalizedProps = normalizeProps(restProps);
 
     // HTML container tags → Group (no visual) or Box (has fill/stroke/borderRadius)
     if (HTML_CONTAINER_TAGS.has(type)) {
-      const ElementClass = isVisualContainer(restProps) ? Frame : Group;
-      const instance = new ElementClass(restProps);
-      applyProps(instance, restProps);
-      return { instance, type, props: restProps };
+      const ElementClass = isVisualContainer(normalizedProps) ? Frame : Group;
+      const instance = new ElementClass(normalizedProps);
+      applyProps(instance, normalizedProps);
+      return { instance, type, props: normalizedProps };
     }
 
     // Leafer native elements from registry
     const ElementClass = getElement(type);
-    const instance = new ElementClass(restProps);
-    applyProps(instance, restProps);
+    const instance = new ElementClass(normalizedProps);
+    applyProps(instance, normalizedProps);
 
-    return { instance, type, props: restProps };
+    return { instance, type, props: normalizedProps };
   },
 
   createTextInstance(
@@ -350,8 +364,10 @@ export const hostConfig = {
     oldProps: Record<string, any>,
     newProps: Record<string, any>,
   ): void {
-    updateProps(hostInstance.instance, oldProps, newProps);
-    hostInstance.props = newProps;
+    const normalizedOld = normalizeProps(oldProps);
+    const normalizedNew = normalizeProps(newProps);
+    updateProps(hostInstance.instance, normalizedOld, normalizedNew);
+    hostInstance.props = normalizedNew;
   },
 
   commitTextUpdate(

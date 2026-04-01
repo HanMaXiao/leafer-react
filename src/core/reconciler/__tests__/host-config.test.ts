@@ -242,6 +242,33 @@ describe('hostConfig', () => {
     });
   });
 
+  describe('prop normalization', () => {
+    it('should map backgroundColor to fill', () => {
+      const host = hostConfig.createInstance(
+        'Rect',
+        { width: 100, backgroundColor: 'red' },
+        container,
+        null,
+        null,
+      );
+
+      expect(host.instance.fill).toBe('red');
+      expect(host.instance.backgroundColor).toBeUndefined();
+    });
+
+    it('should pass through fill as-is', () => {
+      const host = hostConfig.createInstance(
+        'Rect',
+        { width: 100, fill: 'blue' },
+        container,
+        null,
+        null,
+      );
+
+      expect(host.instance.fill).toBe('blue');
+    });
+  });
+
   describe('visibility', () => {
     it('should hide and unhide instances', () => {
       const host = hostConfig.createInstance('Rect', { width: 50, height: 50 }, container, null, null);

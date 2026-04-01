@@ -36,7 +36,7 @@ export const EventTest: React.FC = () => {
         <Ellipse
           width={120}
           height={100}
-          fill="#ff6b6b"
+          fill="#0529dd"
           stroke="#ff5252"
           strokeWidth={2}
         />
