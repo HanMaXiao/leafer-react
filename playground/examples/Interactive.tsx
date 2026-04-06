@@ -54,7 +54,8 @@ export const Interactive: React.FC<{ debug?: boolean }> = ({ debug }) => {
           cornerRadius={12}
           hittable={true}
           onClick={() => setClicks(c => ({ ...c, rect2: c.rect2 + 1 }))}
-          
+          onPointerEnter={() => setHovered('rect2')}
+          onPointerLeave={() => setHovered(null)}
         />
         <Text
           x={50}
