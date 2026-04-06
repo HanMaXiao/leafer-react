@@ -28,6 +28,11 @@ const EVENT_NAME_MAP: Record<string, string> = {
   onClick: 'tap',
   onTap: 'tap',
   onDoubleClick: 'double_tap',
+  onMouseDown: 'pointer.down',
+  onMouseUp: 'pointer.up',
+  onMouseMove: 'pointer.move',
+  onMouseEnter: 'pointer.enter',
+  onMouseLeave: 'pointer.leave',
   onPointerDown: 'pointer.down',
   onPointerUp: 'pointer.up',
   onPointerMove: 'pointer.move',
@@ -58,7 +63,13 @@ function applyProps(instance: any, props: Record<string, any>): void {
     if (isInternalProp(key)) continue;
 
     if (isEventProp(key) && typeof props[key] === 'function') {
-      instance.on(getLeaferEventName(key), props[key]);
+      // For mouse enter/leave events, use capture phase for better reliability
+      const eventName = getLeaferEventName(key);
+      if (eventName === 'pointer.enter' || eventName === 'pointer.leave') {
+        instance.on(eventName, props[key], true); // Use capture phase
+      } else {
+        instance.on(eventName, props[key]);
+      }
     } else {
       instance[key] = props[key];
     }
@@ -71,7 +82,12 @@ function applyProps(instance: any, props: Record<string, any>): void {
 function removeEvents(instance: any, props: Record<string, any>): void {
   for (const key of Object.keys(props)) {
     if (isEventProp(key) && typeof props[key] === 'function') {
-      instance.off(getLeaferEventName(key), props[key]);
+      const eventName = getLeaferEventName(key);
+      if (eventName === 'pointer.enter' || eventName === 'pointer.leave') {
+        instance.off(eventName, props[key], true); // Use capture phase
+      } else {
+        instance.off(eventName, props[key]);
+      }
     }
   }
 }
