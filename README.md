@@ -237,11 +237,11 @@ React 事件自动映射为 Leafer 事件：
 |-------|--------|
 | `onClick` | `tap` |
 | `onDoubleClick` | `double_tap` |
-| `onMouseDown` | `pointer.down` |
-| `onMouseUp` | `pointer.up` |
-| `onMouseMove` | `pointer.move` |
-| `onMouseEnter` | `pointer.enter` |
-| `onMouseLeave` | `pointer.leave` |
+| `onPointerDown` | `pointer.down` |
+| `onPointerUp` | `pointer.up` |
+| `onPointerMove` | `pointer.move` |
+| `onPointerEnter` | `pointer.enter` |
+| `onPointerLeave` | `pointer.leave` |
 
 ## 开发
 
@@ -273,6 +273,8 @@ pnpm run dev:page   # 启动 Playground
 - [ ] 导出示例代码功能
 - [ ] 部署到 GitHub Pages
 
-## 许可证
+## 一杯咖啡
+https://ifdian.net/a/leafer-react
 
+## 许可证
 MIT
