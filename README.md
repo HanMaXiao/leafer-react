@@ -273,6 +273,9 @@ pnpm run dev:page   # 启动 Playground
 - [ ] 导出示例代码功能
 - [ ] 部署到 GitHub Pages
 
+## 近期状况
+尝试在整合在项目中使用，可能会有较大的更改 
+
 ## 一杯咖啡
 https://ifdian.net/a/leafer-react
 
