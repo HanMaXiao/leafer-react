@@ -33,7 +33,8 @@
     "@leafer-ui/mask": "^2.0.5",
     "@leafer-ui/web": "^2.0.5",
     "leafer-ui": "2.0.5",
-    "react-reconciler": "^0.33.0"
+    "react-reconciler": "^0.33.0",
+    "shiki": "^4.0.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.24.0",

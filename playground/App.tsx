@@ -1,14 +1,23 @@
 // playground/App.tsx
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { EXAMPLES } from './examples';
+import { codeToHtml } from 'shiki';
 import './App.css';
 
 export default function App() {
   const [selectedExample, setSelectedExample] = useState(EXAMPLES[0]);
   const [showCode, setShowCode] = useState(true);
   const [debug, setDebug] = useState(false);
+  const [highlightedCode, setHighlightedCode] = useState('');
 
   const SelectedComponent = selectedExample.component;
+
+  useEffect(() => {
+    codeToHtml(selectedExample.code, {
+      lang: 'tsx',
+      theme: 'github-dark',
+    }).then(setHighlightedCode);
+  }, [selectedExample.code]);
 
   return (
     <div className="app">
@@ -21,9 +30,8 @@ export default function App() {
           {EXAMPLES.map((example) => (
             <button
               key={example.id}
-              className={`example-btn ${
-                selectedExample.id === example.id ? 'active' : ''
-              }`}
+              className={`example-btn ${selectedExample.id === example.id ? 'active' : ''
+                }`}
               onClick={() => setSelectedExample(example)}
             >
               <div className="example-name">{example.name}</div>
@@ -66,7 +74,9 @@ export default function App() {
           </button>
         </div>
         <div className={`code-content ${!showCode ? 'hidden' : ''}`}>
-          <pre>{selectedExample.code}</pre>
+          {highlightedCode && (
+            <div dangerouslySetInnerHTML={{ __html: highlightedCode }} />
+          )}
         </div>
       </aside>
     </div>
