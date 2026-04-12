@@ -166,12 +166,15 @@ html, body, #root {
 .code-content pre {
   margin: 0;
   padding: 16px;
-  color: #e0e0e0;
   font-family: 'Fira Code', 'Consolas', monospace;
   font-size: 13px;
   line-height: 1.5;
   white-space: pre-wrap;
   word-break: break-all;
+}
+
+.code-content pre code {
+  font-family: inherit;
 }
 
 .code-content .hidden {
