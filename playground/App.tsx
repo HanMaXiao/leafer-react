@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { EXAMPLES } from './examples';
 import { codeToHtml } from 'shiki';
+import { copyToClipboard } from './utils/exportCode';
 import './App.css';
 
 export default function App() {
@@ -9,6 +10,7 @@ export default function App() {
   const [showCode, setShowCode] = useState(true);
   const [debug, setDebug] = useState(false);
   const [highlightedCode, setHighlightedCode] = useState('');
+  const [copyState, setCopyState] = useState<'idle' | 'copied'>('idle');
 
   const SelectedComponent = selectedExample.component;
 
@@ -18,6 +20,12 @@ export default function App() {
       theme: 'github-dark',
     }).then(setHighlightedCode);
   }, [selectedExample.code]);
+
+  const handleCopy = async () => {
+    await copyToClipboard(selectedExample.code);
+    setCopyState('copied');
+    setTimeout(() => setCopyState('idle'), 1500);
+  };
 
   return (
     <div className="app">
@@ -48,14 +56,23 @@ export default function App() {
             <h2>{selectedExample.name}</h2>
             <p>{selectedExample.description}</p>
           </div>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px' }}>
-            <input
-              type="checkbox"
-              checked={debug}
-              onChange={(e) => setDebug(e.target.checked)}
-            />
-            Debug
-          </label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px' }}>
+              <input
+                type="checkbox"
+                checked={debug}
+                onChange={(e) => setDebug(e.target.checked)}
+              />
+              Debug
+            </label>
+            <button
+              className="panel-toggle"
+              onClick={() => setShowCode(!showCode)}
+              title={showCode ? 'Hide Code Panel' : 'Show Code Panel'}
+            >
+              {showCode ? '→' : '←'}
+            </button>
+          </div>
         </div>
         <div className="preview-content">
           <SelectedComponent debug={debug} />
@@ -63,17 +80,17 @@ export default function App() {
       </main>
 
       {/* Code Panel */}
-      <aside className="code-panel">
+      <aside className={`code-panel ${!showCode ? 'hidden' : ''}`}>
         <div className="code-header">
           <h3>Source Code</h3>
           <button
-            className="code-toggle"
-            onClick={() => setShowCode(!showCode)}
+            className={`code-copy ${copyState}`}
+            onClick={handleCopy}
           >
-            {showCode ? 'Hide' : 'Show'}
+            {copyState === 'copied' ? 'Copied!' : 'Copy'}
           </button>
         </div>
-        <div className={`code-content ${!showCode ? 'hidden' : ''}`}>
+        <div className="code-content">
           {highlightedCode && (
             <div dangerouslySetInnerHTML={{ __html: highlightedCode }} />
           )}
