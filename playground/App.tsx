@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { EXAMPLES } from './examples';
 import { codeToHtml } from 'shiki';
+import { copyToClipboard } from './utils/exportCode';
 import './App.css';
 
 export default function App() {
@@ -9,6 +10,7 @@ export default function App() {
   const [showCode, setShowCode] = useState(true);
   const [debug, setDebug] = useState(false);
   const [highlightedCode, setHighlightedCode] = useState('');
+  const [copyState, setCopyState] = useState<'idle' | 'copied'>('idle');
 
   const SelectedComponent = selectedExample.component;
 
@@ -18,6 +20,12 @@ export default function App() {
       theme: 'github-dark',
     }).then(setHighlightedCode);
   }, [selectedExample.code]);
+
+  const handleCopy = async () => {
+    await copyToClipboard(selectedExample.code);
+    setCopyState('copied');
+    setTimeout(() => setCopyState('idle'), 1500);
+  };
 
   return (
     <div className="app">
@@ -66,12 +74,20 @@ export default function App() {
       <aside className="code-panel">
         <div className="code-header">
           <h3>Source Code</h3>
-          <button
-            className="code-toggle"
-            onClick={() => setShowCode(!showCode)}
-          >
-            {showCode ? 'Hide' : 'Show'}
-          </button>
+          <div className="code-actions">
+            <button
+              className={`code-copy ${copyState}`}
+              onClick={handleCopy}
+            >
+              {copyState === 'copied' ? 'Copied!' : 'Copy'}
+            </button>
+            <button
+              className="code-toggle"
+              onClick={() => setShowCode(!showCode)}
+            >
+              {showCode ? 'Hide' : 'Show'}
+            </button>
+          </div>
         </div>
         <div className={`code-content ${!showCode ? 'hidden' : ''}`}>
           {highlightedCode && (
