@@ -1,71 +1,90 @@
 import React, { useLayoutEffect, useRef, ReactNode } from 'react';
-import { Leafer as LeaferCore } from '@leafer-ui/core';
-import '@leafer-ui/web';
 import { LeaferContext } from '../context/LeaferContext';
 import { render, unmount } from '../core/reconciler';
+import { App } from 'leafer-ui';
+import '@leafer-ui/web';
+import '@leafer-in/viewport';
+import '@leafer-in/view';
 
+
+// 定义 LeaferProps 接口
 export interface LeaferProps {
-  view?: HTMLElement | string;
-  width?: number;
-  height?: number;
-  fill?: string;
-  editor?: boolean | Record<string, any>;
   children?: ReactNode;
-  onAppReady?: (app: LeaferCore) => void;
+  onAppReady?: (app: any) => void;
+  [key: string]: any;
 }
 
 export const Leafer: React.FC<LeaferProps> = ({
-  view,
-  width,
-  height,
-  fill,
-  editor = false,
   children,
   onAppReady,
+  ...config
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const appRef = useRef<LeaferCore | null>(null);
+  const appRef = useRef<App | null>(null);
+  const onAppReadyRef = useRef(onAppReady);
+  const isInitializedRef = useRef(false);
 
-  // Initialize Leafer app (runs once)
+  onAppReadyRef.current = onAppReady;
+
   useLayoutEffect(() => {
-    const viewElement =
-      typeof view === 'string'
-        ? document.getElementById(view)
-        : view || containerRef.current;
+    if (isInitializedRef.current) return;
+    
+    // // 只在客户端环境中运行
+    // if (typeof window === 'undefined' || !App) return;
+
+    let viewElement: HTMLElement | null = null;
+    if (typeof config.view === 'string') {
+      viewElement = document.getElementById(config.view);
+      if (!viewElement) {
+        console.warn(`[Leafer] Element with id "${config.view}" not found`);
+        viewElement = containerRef.current;
+      }
+    } else if (config.view instanceof HTMLElement) {
+      viewElement = config.view;
+    } else {
+      viewElement = containerRef.current;
+    }
 
     if (!viewElement) {
-      console.error('[Leafer] view element not found');
+      console.error('[Leafer] View element not found');
       return;
     }
 
-    const rect = viewElement.getBoundingClientRect();
-    const actualWidth = width || rect.width;
-    const actualHeight = height || rect.height;
+    // Filter out undefined props so Leafer's own defaults are preserved
+    // (DataHelper.assign overwrites defaults with undefined values)
+    const filteredConfig: Record<string, any> = { view: viewElement || null };
+    for (const [key, value] of Object.entries(config)) {
+      if (value !== undefined) {
+        filteredConfig[key] = key === 'editor' && value == null ? {} : value;
+      }
+    }
 
-    const leafer = new LeaferCore({
-      view: viewElement,
-      width: actualWidth,
-      height: actualHeight,
-      fill,
-    });
+    const app = new App(filteredConfig);
 
-    appRef.current = leafer;
-    onAppReady?.(leafer);
+    appRef.current = app;
+    isInitializedRef.current = true;
+
+    if (app.tree && children) {
+      render(children, app);
+    }
+
+    onAppReadyRef.current?.(app);
 
     return () => {
-      unmount(leafer);
-      if ((leafer as any).destroy) {
-        (leafer as any).destroy();
-      }
+      unmount(app);
+      app.destroy(true);
       appRef.current = null;
+      isInitializedRef.current = false;
     };
-  }, [view, width, height, fill, editor]);
+  }, []);
 
-  // Reconcile children into Leafer app
   useLayoutEffect(() => {
     const app = appRef.current;
-    if (app) {
+    if (app?.tree && isInitializedRef.current) {
       render(children, app);
+      // App's tree layer render loop may have stopped after the initial render.
+      // Force a synchronous re-render to pick up newly added children.
+      app.tree.forceRender(undefined, true);
     }
   }, [children]);
 
@@ -73,7 +92,15 @@ export const Leafer: React.FC<LeaferProps> = ({
     <LeaferContext.Provider value={appRef.current as any}>
       <div
         ref={containerRef}
-        style={{ width: '100%', height: '100%' }}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          width: '100%',
+          height: '100%',
+        }}
       />
     </LeaferContext.Provider>
   );

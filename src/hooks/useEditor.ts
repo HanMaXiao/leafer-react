@@ -1,5 +1,4 @@
 import { useLeafer } from './useLeafer';
-import type { App } from '@leafer-ui/core';
 
 export interface EditorControls {
   select: (element: any) => void;

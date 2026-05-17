@@ -1,44 +1,49 @@
 import { DefaultEventPriority } from 'react-reconciler/constants';
 import { getElement } from '../renderer/element-registry';
 import type { LeaferHostInstance, LeaferRootContainer } from './types';
-import { Group, Frame } from '@leafer-ui/core';
-
-// HTML container tags that map to Leafer Group/Frame
-const HTML_CONTAINER_TAGS = new Set(['div', 'span', 'section', 'article', 'main', 'header', 'footer', 'nav', 'aside']);
-
-// React-style prop names → Leafer prop names
-const PROP_ALIAS_MAP: Record<string, string> = {
-  backgroundColor: 'fill',
-};
+import {
+  HTML_CONTAINER_TAGS,
+  HTML_TEXT_TAG_DEFAULTS,
+  HTML_IMAGE_TAGS,
+  PROP_ALIAS_MAP,
+  EVENT_NAME_MAP,
+  PX_VALUE_PROPS,
+  stripPx,
+} from './maps';
+import { parseClassName } from '../../utils/classname-parser';
 
 function normalizeProps(props: Record<string, any>): Record<string, any> {
-  const result: Record<string, any> = {};
-  for (const key of Object.keys(props)) {
-    result[PROP_ALIAS_MAP[key] || key] = props[key];
+  const { className, ...rest } = props;
+
+  // Parse className first (lowest priority)
+  let result: Record<string, any> = className ? parseClassName(className) : {};
+  // First pass: set native props (not aliases), overriding className values
+  for (const key of Object.keys(rest)) {
+    if (!(key in PROP_ALIAS_MAP)) {
+      result[key] = rest[key];
+    }
+  }
+  // Second pass: set alias props only if target key not already set by native prop
+  for (const key of Object.keys(rest)) {
+    if (key in PROP_ALIAS_MAP) {
+      const target = PROP_ALIAS_MAP[key];
+      if (!(target in result)) {
+        result[target] = rest[key];
+      }
+    }
+  }
+  // Third pass: convert CSS px string values to numbers
+  for (const key of Object.keys(result)) {
+    if (PX_VALUE_PROPS.has(key)) {
+      result[key] = stripPx(result[key]);
+    }
   }
   return result;
 }
 
 function isVisualContainer(props: Record<string, any>): boolean {
-  return 'fill' in props || 'stroke' in props || 'borderRadius' in props;
+  return 'fill' in props || 'stroke' in props || 'cornerRadius' in props;
 }
-
-// Event name mapping: React style → Leafer style
-const EVENT_NAME_MAP: Record<string, string> = {
-  onClick: 'tap',
-  onTap: 'tap',
-  onDoubleClick: 'double_tap',
-  onMouseDown: 'pointer.down',
-  onMouseUp: 'pointer.up',
-  onMouseMove: 'pointer.move',
-  onMouseEnter: 'pointer.enter',
-  onMouseLeave: 'pointer.leave',
-  onPointerDown: 'pointer.down',
-  onPointerUp: 'pointer.up',
-  onPointerMove: 'pointer.move',
-  onPointerEnter: 'pointer.enter',
-  onPointerLeave: 'pointer.leave',
-};
 
 function isEventProp(key: string): boolean {
   return key.startsWith('on') && key.length > 2;
@@ -142,9 +147,34 @@ export const hostConfig = {
     const { children, ...restProps } = props;
     const normalizedProps = normalizeProps(restProps);
 
-    // HTML container tags → Group (no visual) or Box (has fill/stroke/borderRadius)
+    // HTML text tags → Text element with default styles
+    if (type in HTML_TEXT_TAG_DEFAULTS) {
+      const defaults = HTML_TEXT_TAG_DEFAULTS[type];
+      const textFromChildren = typeof props.children === 'string' ? props.children : undefined;
+      const merged = { ...defaults, ...normalizedProps };
+      if (textFromChildren && !merged.text) {
+        merged.text = textFromChildren;
+      }
+      const ElementClass = getElement('Text');
+      const instance = new ElementClass(merged);
+      applyProps(instance, merged);
+      return { instance, type, props: merged };
+    }
+
+    // HTML image tags → Image element (src → url)
+    if (HTML_IMAGE_TAGS.has(type)) {
+      const { src, ...imageRest } = normalizedProps;
+      const imageProps = src ? { ...imageRest, url: src } : imageRest;
+      const ElementClass = getElement('Image');
+      const instance = new ElementClass(imageProps);
+      applyProps(instance, imageProps);
+      return { instance, type, props: imageProps };
+    }
+
+    // HTML container tags → Group (no visual) or Frame (has fill/stroke/cornerRadius)
     if (HTML_CONTAINER_TAGS.has(type)) {
-      const ElementClass = isVisualContainer(normalizedProps) ? Frame : Group;
+      const elementTag = isVisualContainer(normalizedProps) ? 'Frame' : 'Group';
+      const ElementClass = getElement(elementTag);
       const instance = new ElementClass(normalizedProps);
       applyProps(instance, normalizedProps);
       return { instance, type, props: normalizedProps };
@@ -191,8 +221,11 @@ export const hostConfig = {
     return null;
   },
 
-  resetAfterCommit(): void {
-    // No-op
+  resetAfterCommit(containerInfo: LeaferRootContainer): void {
+    const app = containerInfo?.app;
+    if (app?.tree) {
+      app.tree.forceRender();
+    }
   },
 
   preparePortalMount(): void {
@@ -307,7 +340,8 @@ export const hostConfig = {
     childHost: LeaferHostInstance,
   ): void {
     if (childHost.type === '#text') return;
-    container.app.add(childHost.instance);
+    const target = container.app.tree || container.app;
+    target.add(childHost.instance);
     container.children.push(childHost);
   },
 
@@ -334,8 +368,9 @@ export const hostConfig = {
     beforeHost: LeaferHostInstance,
   ): void {
     if (childHost.type === '#text') return;
-    container.app.add(childHost.instance);
-    const children = container.app.children as any[];
+    const target = container.app.tree || container.app;
+    target.add(childHost.instance);
+    const children = target.children as any[];
     const childIndex = children.indexOf(childHost.instance);
     const beforeIndex = children.indexOf(beforeHost.instance);
     if (childIndex !== -1 && beforeIndex !== -1 && childIndex > beforeIndex) {
@@ -379,6 +414,9 @@ export const hostConfig = {
     const normalizedNew = normalizeProps(newProps);
     updateProps(hostInstance.instance, normalizedOld, normalizedNew);
     hostInstance.props = normalizedNew;
+    if (typeof hostInstance.instance.forceUpdate === 'function') {
+      hostInstance.instance.forceUpdate();
+    }
   },
 
   commitTextUpdate(

@@ -1,34 +1,36 @@
-import {
-  Rect as LeaferRect,
-  Text as LeaferText,
-  Group as LeaferGroup,
-  Ellipse as LeaferEllipse,
-  Polygon as LeaferPolygon,
-  Star as LeaferStar,
-  Line as LeaferLine,
-  Image as LeaferImage,
-  Canvas as LeaferCanvas,
-  Path as LeaferPath,
-  Pen as LeaferPen,
-  Box as LeaferBox,
-  Frame as LeaferFrame,
-} from '@leafer-ui/core';
 import { registerElement } from './element-registry';
-// 注册 Leafer 原生元素
-registerElement('Rect', LeaferRect as any);
-registerElement('Text', LeaferText as any);
-registerElement('Group', LeaferGroup as any);
-registerElement('Ellipse', LeaferEllipse as any);
-registerElement('Polygon', LeaferPolygon as any);
-registerElement('Star', LeaferStar as any);
-registerElement('Line', LeaferLine as any);
-registerElement('Image', LeaferImage as any);
-registerElement('Canvas', LeaferCanvas as any);
-registerElement('Path', LeaferPath as any);
-registerElement('Pen', LeaferPen as any);
-registerElement('Box', LeaferBox as any);
-registerElement('Frame', LeaferFrame as any);
-// 可扩展更多元素
+import {
+  Rect,
+  Text,
+  Group,
+  Ellipse,
+  Polygon,
+  Star,
+  Line,
+  Image,
+  Canvas,
+  Path,
+  Pen,
+  Box,
+  Frame,
+} from 'leafer-ui';
+import { Flow } from '@leafer-in/flow';
+
+registerElement('Rect', Rect as any);
+registerElement('Text', Text as any);
+registerElement('Group', Group as any);
+registerElement('Ellipse', Ellipse as any);
+registerElement('Polygon', Polygon as any);
+registerElement('Star', Star as any);
+registerElement('Line', Line as any);
+registerElement('Image', Image as any);
+registerElement('Canvas', Canvas as any);
+registerElement('Path', Path as any);
+registerElement('Pen', Pen as any);
+registerElement('Box', Box as any);
+registerElement('Frame', Frame as any);
+registerElement('Flow', Flow as any);
+
 export function registerLeaferElements(): void {
   // 已在导入时注册
 }

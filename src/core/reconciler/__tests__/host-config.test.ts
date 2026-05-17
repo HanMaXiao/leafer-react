@@ -41,6 +41,8 @@ class MockElement {
 class MockRect extends MockElement { constructor(props: any) { super(props); } }
 class MockGroup extends MockElement { constructor(props: any) { super(props); } }
 class MockText extends MockElement { constructor(props: any) { super(props); } }
+class MockFrame extends MockElement { constructor(props: any) { super(props); } }
+class MockImage extends MockElement { constructor(props: any) { super(props); } }
 
 describe('hostConfig', () => {
   let container: LeaferRootContainer;
@@ -50,6 +52,8 @@ describe('hostConfig', () => {
     registerElement('Rect', MockRect as any);
     registerElement('Group', MockGroup as any);
     registerElement('Text', MockText as any);
+    registerElement('Frame', MockFrame as any);
+    registerElement('Image', MockImage as any);
 
     // Mock container (simulates a Leafer app)
     const mockApp = new MockGroup({});
@@ -228,6 +232,93 @@ describe('hostConfig', () => {
     });
   });
 
+  describe('drag event mapping', () => {
+    it('should map onDragStart to drag.start', () => {
+      const handler = vi.fn();
+      const host = hostConfig.createInstance(
+        'Rect', { width: 100, onDragStart: handler }, container, null, null,
+      );
+      expect(host.instance['__event_drag.start']).toBe(handler);
+    });
+
+    it('should map onDrag to drag', () => {
+      const handler = vi.fn();
+      const host = hostConfig.createInstance(
+        'Rect', { width: 100, onDrag: handler }, container, null, null,
+      );
+      expect(host.instance['__event_drag']).toBe(handler);
+    });
+
+    it('should map onDragEnd to drag.end', () => {
+      const handler = vi.fn();
+      const host = hostConfig.createInstance(
+        'Rect', { width: 100, onDragEnd: handler }, container, null, null,
+      );
+      expect(host.instance['__event_drag.end']).toBe(handler);
+    });
+  });
+
+  describe('transform event mapping', () => {
+    it('should map move events', () => {
+      const startFn = vi.fn(), moveFn = vi.fn(), endFn = vi.fn();
+      const host = hostConfig.createInstance(
+        'Rect', { width: 100, onMoveStart: startFn, onMove: moveFn, onMoveEnd: endFn },
+        container, null, null,
+      );
+      expect(host.instance['__event_move.start']).toBe(startFn);
+      expect(host.instance['__event_move']).toBe(moveFn);
+      expect(host.instance['__event_move.end']).toBe(endFn);
+    });
+
+    it('should map rotate events', () => {
+      const startFn = vi.fn(), rotateFn = vi.fn(), endFn = vi.fn();
+      const host = hostConfig.createInstance(
+        'Rect', { width: 100, onRotateStart: startFn, onRotate: rotateFn, onRotateEnd: endFn },
+        container, null, null,
+      );
+      expect(host.instance['__event_rotate.start']).toBe(startFn);
+      expect(host.instance['__event_rotate']).toBe(rotateFn);
+      expect(host.instance['__event_rotate.end']).toBe(endFn);
+    });
+
+    it('should map zoom events', () => {
+      const startFn = vi.fn(), zoomFn = vi.fn(), endFn = vi.fn();
+      const host = hostConfig.createInstance(
+        'Rect', { width: 100, onZoomStart: startFn, onZoom: zoomFn, onZoomEnd: endFn },
+        container, null, null,
+      );
+      expect(host.instance['__event_zoom.start']).toBe(startFn);
+      expect(host.instance['__event_zoom']).toBe(zoomFn);
+      expect(host.instance['__event_zoom.end']).toBe(endFn);
+    });
+
+    it('should map onResize as alias for zoom', () => {
+      const handler = vi.fn();
+      const host = hostConfig.createInstance(
+        'Rect', { width: 100, onResize: handler }, container, null, null,
+      );
+      expect(host.instance['__event_zoom']).toBe(handler);
+    });
+  });
+
+  describe('keyboard event mapping', () => {
+    it('should map onKeyDown to key', () => {
+      const handler = vi.fn();
+      const host = hostConfig.createInstance(
+        'Rect', { width: 100, onKeyDown: handler }, container, null, null,
+      );
+      expect(host.instance['__event_key']).toBe(handler);
+    });
+
+    it('should map onKeyUp to key.up', () => {
+      const handler = vi.fn();
+      const host = hostConfig.createInstance(
+        'Rect', { width: 100, onKeyUp: handler }, container, null, null,
+      );
+      expect(host.instance['__event_key.up']).toBe(handler);
+    });
+  });
+
   describe('text instances', () => {
     it('should create a text instance', () => {
       const textHost = hostConfig.createTextInstance('hello', container, null, null);
@@ -267,6 +358,125 @@ describe('hostConfig', () => {
 
       expect(host.instance.fill).toBe('blue');
     });
+
+    it('should map borderRadius to cornerRadius', () => {
+      const host = hostConfig.createInstance(
+        'Rect',
+        { width: 100, borderRadius: 8 },
+        container,
+        null,
+        null,
+      );
+
+      expect(host.instance.cornerRadius).toBe(8);
+      expect(host.instance.borderRadius).toBeUndefined();
+    });
+
+    it('should map borderColor to stroke', () => {
+      const host = hostConfig.createInstance(
+        'Rect',
+        { borderColor: 'black', borderWidth: 2 },
+        container,
+        null,
+        null,
+      );
+      expect(host.instance.stroke).toBe('black');
+      expect(host.instance.borderColor).toBeUndefined();
+    });
+
+    it('should map borderWidth to strokeWidth', () => {
+      const host = hostConfig.createInstance(
+        'Rect',
+        { borderWidth: 2 },
+        container,
+        null,
+        null,
+      );
+      expect(host.instance.strokeWidth).toBe(2);
+      expect(host.instance.borderWidth).toBeUndefined();
+    });
+
+    it('should map background to fill', () => {
+      const host = hostConfig.createInstance(
+        'Rect',
+        { background: 'blue' },
+        container,
+        null,
+        null,
+      );
+      expect(host.instance.fill).toBe('blue');
+      expect(host.instance.background).toBeUndefined();
+    });
+
+    it('should map color to fill', () => {
+      const host = hostConfig.createInstance(
+        'Text',
+        { color: 'red', text: 'hello' },
+        container,
+        null,
+        null,
+      );
+      expect(host.instance.fill).toBe('red');
+      expect(host.instance.color).toBeUndefined();
+    });
+
+    it('should prefer native fill over backgroundColor alias', () => {
+      const host = hostConfig.createInstance(
+        'Rect',
+        { fill: 'green', backgroundColor: 'red' },
+        container,
+        null,
+        null,
+      );
+      expect(host.instance.fill).toBe('green');
+    });
+  });
+
+  describe('CSS px value conversion', () => {
+    it('should convert px string to number for width', () => {
+      const host = hostConfig.createInstance(
+        'Rect',
+        { width: '100px', height: '50px' },
+        container,
+        null,
+        null,
+      );
+      expect(host.instance.width).toBe(100);
+      expect(host.instance.height).toBe(50);
+    });
+
+    it('should keep number values unchanged', () => {
+      const host = hostConfig.createInstance(
+        'Rect',
+        { width: 100 },
+        container,
+        null,
+        null,
+      );
+      expect(host.instance.width).toBe(100);
+    });
+
+    it('should convert px string for cornerRadius via borderRadius', () => {
+      const host = hostConfig.createInstance(
+        'Rect',
+        { borderRadius: '8px' },
+        container,
+        null,
+        null,
+      );
+      expect(host.instance.cornerRadius).toBe(8);
+    });
+
+    it('should convert px string for strokeWidth via borderWidth', () => {
+      const host = hostConfig.createInstance(
+        'Rect',
+        { borderWidth: '2px' },
+        container,
+        null,
+        null,
+      );
+      expect(host.instance.strokeWidth).toBe(2);
+    });
   });
 
   describe('visibility', () => {
@@ -293,6 +503,109 @@ describe('hostConfig', () => {
       hostConfig.clearContainer!(container);
       expect(container.children.length).toBe(0);
       expect(container.app.children.length).toBe(0);
+    });
+  });
+
+  describe('HTML container tag mapping', () => {
+    it('should map div to Group (no visual props)', () => {
+      const host = hostConfig.createInstance('div', {}, container, null, null);
+      expect(host.instance).toBeInstanceOf(MockGroup);
+    });
+
+    it('should map div with fill to Frame (visual container)', () => {
+      const host = hostConfig.createInstance('div', { fill: 'red' }, container, null, null);
+      expect(host.instance).toBeInstanceOf(MockFrame);
+    });
+
+    it('should map div with cornerRadius to Frame', () => {
+      const host = hostConfig.createInstance('div', { cornerRadius: 8 }, container, null, null);
+      expect(host.instance).toBeInstanceOf(MockFrame);
+    });
+
+    it('should map div with borderRadius (CSS alias) to Frame', () => {
+      const host = hostConfig.createInstance('div', { borderRadius: 8 }, container, null, null);
+      expect(host.instance).toBeInstanceOf(MockFrame);
+    });
+
+    it('should map section/article/main/header/footer/nav/aside to Group', () => {
+      for (const tag of ['section', 'article', 'main', 'header', 'footer', 'nav', 'aside']) {
+        const host = hostConfig.createInstance(tag, {}, container, null, null);
+        expect(host.instance).toBeInstanceOf(MockGroup);
+      }
+    });
+  });
+
+  describe('HTML text tag mapping', () => {
+    it('should map h1 to Text with default fontSize', () => {
+      const host = hostConfig.createInstance('h1', { children: 'Title' }, container, null, null);
+      expect(host.instance).toBeInstanceOf(MockText);
+      expect(host.instance.fontSize).toBe(32);
+    });
+
+    it('should map p to Text with default styles', () => {
+      const host = hostConfig.createInstance('p', { children: 'Paragraph' }, container, null, null);
+      expect(host.instance).toBeInstanceOf(MockText);
+      expect(host.instance.fontSize).toBe(14);
+    });
+
+    it('should allow overriding default h1 styles', () => {
+      const host = hostConfig.createInstance('h1', { children: 'Title', fontSize: 48 }, container, null, null);
+      expect(host.instance).toBeInstanceOf(MockText);
+      expect(host.instance.fontSize).toBe(48);
+    });
+
+    it('should map h1-h6 with correct default sizes', () => {
+      const sizes: Record<string, number> = { h1: 32, h2: 28, h3: 24, h4: 20, h5: 16, h6: 14 };
+      for (const [tag, size] of Object.entries(sizes)) {
+        const host = hostConfig.createInstance(tag, { children: tag }, container, null, null);
+        expect(host.instance.fontSize).toBe(size);
+      }
+    });
+
+    it('should map label and a to Text', () => {
+      const label = hostConfig.createInstance('label', { children: 'Name' }, container, null, null);
+      expect(label.instance).toBeInstanceOf(MockText);
+      const anchor = hostConfig.createInstance('a', { children: 'Link' }, container, null, null);
+      expect(anchor.instance).toBeInstanceOf(MockText);
+    });
+
+    it('should convert string children to text property', () => {
+      const host = hostConfig.createInstance('p', { children: 'Hello World' }, container, null, null);
+      expect(host.instance.text).toBe('Hello World');
+    });
+  });
+
+  describe('HTML image tag mapping', () => {
+    it('should map img to Image with src → url', () => {
+      const host = hostConfig.createInstance(
+        'img', { src: 'https://example.com/photo.png' }, container, null, null,
+      );
+      expect(host.instance).toBeInstanceOf(MockImage);
+      expect(host.instance.url).toBe('https://example.com/photo.png');
+      expect(host.instance.src).toBeUndefined();
+    });
+
+    it('should pass through other props to Image', () => {
+      const host = hostConfig.createInstance(
+        'img', { src: 'test.png', width: 100, height: 50 }, container, null, null,
+      );
+      expect(host.instance.url).toBe('test.png');
+      expect(host.instance.width).toBe(100);
+      expect(host.instance.height).toBe(50);
+    });
+  });
+
+  describe('HTML form/list tag mapping', () => {
+    it('should map ul/ol/li/button/input/textarea/select to Group', () => {
+      for (const tag of ['ul', 'ol', 'li', 'button', 'input', 'textarea', 'select']) {
+        const host = hostConfig.createInstance(tag, {}, container, null, null);
+        expect(host.instance).toBeInstanceOf(MockGroup);
+      }
+    });
+
+    it('should map button with fill to Frame', () => {
+      const host = hostConfig.createInstance('button', { fill: 'blue' }, container, null, null);
+      expect(host.instance).toBeInstanceOf(MockFrame);
     });
   });
 });

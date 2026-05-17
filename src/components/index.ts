@@ -12,6 +12,8 @@ export { Path } from './Path';
 export { Pen } from './Pen';
 export { Box } from './Box';
 export { Frame } from './Frame';
+export { Flow } from './Flow';
+export { adaptComponent } from './adaptComponent';
 
 export type { LeaferProps } from './Leafer';
 export type { RectProps } from './Rect';
@@ -27,3 +29,5 @@ export type { PathProps } from './Path';
 export type { PenProps } from './Pen';
 export type { BoxProps } from './Box';
 export type { FrameProps } from './Frame';
+export type { FlowProps } from './Flow';
+export type { LeaferCanvasProps } from './adaptComponent';

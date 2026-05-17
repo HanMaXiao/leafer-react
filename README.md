@@ -78,11 +78,11 @@ function Card({ x, y, title, color }) {
 
 `<div>` 等 HTML 容器标签自动映射为 Leafer 元素：
 
-| HTML 标签 | 无 fill/stroke | 有 fill/stroke |
-|-----------|---------------|---------------|
-| `<div>` | Group | Frame |
-| `<span>` | Group | Frame |
-| `<section>` | Group | Frame |
+| HTML 标签     | 无 fill/stroke | 有 fill/stroke |
+| ----------- | ------------- | ------------- |
+| `<div>`     | Group         | Frame         |
+| `<span>`    | Group         | Frame         |
+| `<section>` | Group         | Frame         |
 
 ```tsx
 // 带 背景颜色 的 div 映射为 Frame（带背景的容器）
@@ -233,13 +233,13 @@ editor.clear();
 
 React 事件自动映射为 Leafer 事件：
 
-| React | Leafer |
-|-------|--------|
-| `onClick` | `tap` |
-| `onDoubleClick` | `double_tap` |
-| `onPointerDown` | `pointer.down` |
-| `onPointerUp` | `pointer.up` |
-| `onPointerMove` | `pointer.move` |
+| React            | Leafer          |
+| ---------------- | --------------- |
+| `onClick`        | `tap`           |
+| `onDoubleClick`  | `double_tap`    |
+| `onPointerDown`  | `pointer.down`  |
+| `onPointerUp`    | `pointer.up`    |
+| `onPointerMove`  | `pointer.move`  |
 | `onPointerEnter` | `pointer.enter` |
 | `onPointerLeave` | `pointer.leave` |
 
@@ -254,6 +254,7 @@ pnpm run dev:page   # 启动 Playground
 ```
 
 ## BUG&&优化
+
 ~~修复自定义元素没有Props无法作为JSX使用的问题~~  已修复
 
 优化Reconciler中未解析Backgroundcolor 已修复
@@ -263,21 +264,20 @@ pnpm run dev:page   # 启动 Playground
 悬浮在元素上悬浮事件没有被触发
 
 ## 路线图
+
 ### Leafer-React
+
 - [ ] 支持更多Leafer基础元素
 - [ ] 测试各种组件渲染在leafer上
+
 ### PlayGround演练场
+
 - [ ] 添加 Monaco 编辑器支持实时代码编辑
 - [ ] 添加主题切换功能
 - [ ] 添加性能监控面板
 - [ ] 导出示例代码功能
 - [ ] 部署到 GitHub Pages
 
-## 近期状况
-尝试在整合在项目中使用，可能会有较大的更改 
-
-## 一杯咖啡
-https://ifdian.net/a/leafer-react
-
 ## 许可证
+
 MIT

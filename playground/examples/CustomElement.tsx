@@ -1,23 +1,24 @@
 // playground/examples/CustomElement.tsx
 // 示例6：自定义 Leafer 元素注册成 React 组件
 import React from 'react';
-import { Leafer, Text, Group, registerComponent } from '../../src/index';
+import { Leafer, Text, Group, registerElement, defineLeaferElement, LeaferElementProps } from '../../src/index';
 import { UI, registerUI } from '@leafer-ui/core';
+import type { IUIInputData } from '@leafer-ui/interface';
 
-interface DiamondProps {
-  width?: number;
-  height?: number;
-  fill?: string;
+// 1. 定义属性接口
+interface IDiamondInputData extends IUIInputData {
   stroke?: string;
   strokeWidth?: number;
-  x?: number;
-  y?: number;
 }
 
+// 2. 定义自定义 Leafer 图形类
 class Diamond extends UI {
   public get __tag() { return 'Diamond'; }
 
-  constructor(data: DiamondProps) {
+  declare public stroke: IDiamondInputData['stroke'];
+  declare public strokeWidth: IDiamondInputData['strokeWidth'];
+
+  constructor(data: IDiamondInputData = {}) {
     super(data);
   }
 
@@ -46,10 +47,15 @@ class Diamond extends UI {
   }
 }
 
-// 使用函数式方式注册 UI 元素
+// 3. 注册 UI 元素（函数式方式，避免装饰器）
 registerUI()(Diamond);
 
-const DiamondElement = registerComponent<DiamondProps>('Diamond', Diamond as any);
+// 4. 注册元素到 leafer-react
+registerElement('Diamond', Diamond);
+
+// 5. 定义 React 组件类型和组件
+export type DiamondProps = LeaferElementProps<Diamond, IDiamondInputData>;
+export const DiamondElement = defineLeaferElement<DiamondProps>('Diamond');
 
 export const CustomElement: React.FC<{ debug?: boolean }> = ({ debug }) => {
   if (debug) console.log('[CustomElement] rendered');
@@ -74,55 +80,74 @@ export const CustomElement: React.FC<{ debug?: boolean }> = ({ debug }) => {
         <Text y={75} text="Multiple" fontSize={14} fill="#333" />
       </Group>
 
-      <Text x={50} y={240} text="const Diamond = registerComponent<Props>('Diamond', DiamondClass)" fontSize={12} fill="#667" fontFamily="monospace" />
-      <Text x={50} y={265} text="注册后返回的组件可在 JSX 中使用" fontSize={14} fill="#666" />
+      <Text x={50} y={240} text="registerElement('Diamond', Diamond);" fontSize={12} fill="#667" fontFamily="monospace" />
+      <Text x={50} y={260} text="defineLeaferElement<DiamondProps>('Diamond');" fontSize={12} fill="#667" fontFamily="monospace" />
+      <Text x={50} y={285} text="注册后返回的组件可在 JSX 中使用" fontSize={14} fill="#666" />
     </Leafer>
   );
 };
 
-export const CustomElementCode = `import { registerComponent } from 'leafer-react';
+export const CustomElementCode = `import { registerElement, defineLeaferElement, LeaferElementProps } from 'leafer-react';
 import { UI, registerUI } from '@leafer-ui/core';
+import type { IUIInputData } from '@leafer-ui/interface';
 
-interface DiamondProps {
-  width?: number;
-  height?: number;
-  fill?: string;
+// 1. 定义属性接口
+interface IDiamondInputData extends IUIInputData {
+  stroke?: string;
+  strokeWidth?: number;
 }
 
-// 1. 定义自定义 Leafer 图形类
+// 2. 定义自定义 Leafer 图形类
 class Diamond extends UI {
   public get __tag() { return 'Diamond'; }
+
+  declare public stroke: IDiamondInputData['stroke'];
+  declare public strokeWidth: IDiamondInputData['strokeWidth'];
+
+  constructor(data: IDiamondInputData = {}) {
+    super(data);
+  }
 
   __draw(canvas) {
     const { context } = canvas;
     const w = this.width || 60;
     const h = this.height || 60;
+    const sw = this.strokeWidth || 0;
 
     context.beginPath();
-    context.moveTo(w / 2, 0);
-    context.lineTo(w, h / 2);
-    context.lineTo(w / 2, h);
-    context.lineTo(0, h / 2);
+    context.moveTo(w / 2, sw);
+    context.lineTo(w - sw, h / 2);
+    context.lineTo(w / 2, h - sw);
+    context.lineTo(sw, h / 2);
     context.closePath();
 
     if (this.fill) {
       context.fillStyle = this.fill;
       context.fill();
     }
+    if (this.stroke) {
+      context.strokeStyle = this.stroke;
+      context.lineWidth = sw;
+      context.stroke();
+    }
   }
 }
 
-// 2. 注册 UI 元素（函数式方式，避免装饰器）
+// 3. 注册 UI 元素（函数式方式，避免装饰器）
 registerUI()(Diamond);
 
-// 3. 注册为 React 组件（返回一个可用的组件）
-const DiamondElement = registerComponent<DiamondProps>('Diamond', Diamond);
+// 4. 注册元素到 leafer-react
+registerElement('Diamond', Diamond);
 
-// 4. 在 JSX 中使用
+// 5. 定义 React 组件类型和组件
+export type DiamondProps = LeaferElementProps<Diamond, IDiamondInputData>;
+export const DiamondElement = defineLeaferElement<DiamondProps>('Diamond');
+
+// 6. 在 JSX 中使用
 function App() {
   return (
     <Leafer fill="#f5f5f5">
-      <DiamondElement width={80} height={80} fill="#667eea" />
+      <DiamondElement width={80} height={80} fill="#667eea" stroke="#5a67d8" strokeWidth={2} />
     </Leafer>
   );
 }`.trim();

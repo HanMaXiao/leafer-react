@@ -43,7 +43,7 @@ export function getElement(tag: string): new (props: any) => any {
  * </Leafer>
  * ```
  */
-export function registerComponent<P = any>(
+export function registerComponent<P extends Record<string, any> = any>(
   tag: string,
   ElementClass: new (props: any) => any
 ): ComponentFunction<P> {

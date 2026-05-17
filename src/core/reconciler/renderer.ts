@@ -33,6 +33,8 @@ export function render(element: ReactNode, app: any): void {
     roots.set(app, entry);
   }
 
+  // Sync API: elements are created and added to the tree immediately.
+  // The caller must trigger a Leafer re-render afterwards (e.g. forceRender).
   (reconciler as any).updateContainerSync(element, entry.root, null, null);
   (reconciler as any).flushSyncWork();
 }
@@ -43,8 +45,7 @@ export function render(element: ReactNode, app: any): void {
 export function unmount(app: any): void {
   const entry = roots.get(app);
   if (entry) {
-    (reconciler as any).updateContainerSync(null, entry.root, null, null);
-    (reconciler as any).flushSyncWork();
+    reconciler.updateContainer(null, entry.root, null, null);
     roots.delete(app);
   }
 }
