@@ -115,10 +115,10 @@ export function adaptComponent<P extends Record<string, any>>(
     }
 
     // children go to inner component, not Group
-    const { children, ref, onCreated, ...groupProps } = leaferProps;
+    const { children, ref, ...groupProps } = leaferProps;
 
     return (
-      <Group {...groupProps}>
+      <Group {...groupProps} ref={ref}>
         <Component {...componentProps as P}>{children}</Component>
       </Group>
     );

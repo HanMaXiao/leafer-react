@@ -35,9 +35,13 @@ function resolveTailwindColor(colorName: string, shade: string): string | undefi
   return palette[shade] ?? palette['DEFAULT'];
 }
 
+function escapeRegex(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function parseArbitraryValue(cls: string, prefix: string): string | undefined {
   // Match pattern like prefix-[value]
-  const regex = new RegExp(`^${prefix}-\\[(.+)\\]$`);
+  const regex = new RegExp(`^${escapeRegex(prefix)}-\\[(.+)\\]$`);
   const match = cls.match(regex);
   return match ? match[1] : undefined;
 }

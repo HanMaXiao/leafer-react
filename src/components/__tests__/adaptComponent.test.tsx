@@ -132,7 +132,7 @@ describe('adaptComponent', () => {
     expect(Object.keys(result.props).filter(k => k !== 'children')).toHaveLength(0);
   });
 
-  it('should handle ref and onCreated without passing to Group', () => {
+  it('should handle ref and onCreated correctly', () => {
     const Adapted = adaptComponent(MockCard);
     const ref = React.createRef();
     const onCreated = vi.fn();
@@ -144,7 +144,7 @@ describe('adaptComponent', () => {
     } as MockCardProps & LeaferCanvasProps) as any;
 
     expect(result.props.ref).toBeUndefined();
-    expect(result.props.onCreated).toBeUndefined();
+    expect(result.props.onCreated).toBe(onCreated);
   });
 
   it('should work with third-party-style components', () => {
